@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
       title: 'Treevana',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
-      darkTheme: darkTheme,
     );
   }
 

@@ -16,7 +16,9 @@ class HomeController extends GetxController {
     final demoSeller = SellerModel(
       id: 's1',
       name: 'GreenLife Nursery',
-      contact: 'greenlife@example.com',
+      email: 'greenlife@example.com',
+      phoneNumber: '0655173633',
+      picture: ''
     );
     products.assignAll([
       ProductModel(

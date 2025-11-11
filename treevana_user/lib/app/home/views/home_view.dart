@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_user/app/products/views/product_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/app/settings/views/settings_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
@@ -85,7 +86,7 @@ class _ProductCard extends StatelessWidget {
       height: size.height * 0.15,
       child: GestureDetector(
         onTap: () {
-          Get.to(() => ProductsView());
+          Get.to(() => ProductView(product: product,));
         },
         child: Card(
           margin: const EdgeInsets.symmetric(vertical: 8),

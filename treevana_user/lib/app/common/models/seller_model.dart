@@ -4,14 +4,19 @@ part 'seller_model.g.dart';
 
 @JsonSerializable()
 class SellerModel {
+
   final String id;
   final String name;
-  final String contact;
+  final String email;
+  final String picture;
+  final String phoneNumber;
 
   SellerModel({
     required this.id,
     required this.name,
-    required this.contact,
+    required this.email,
+    required this.picture,
+    required this.phoneNumber,
   });
 
   factory SellerModel.fromJson(Map<String, dynamic> json) =>
