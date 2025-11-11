@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_user/app/orders/views/orders_view.dart';
 import 'package:treevana_user/app/products/views/product_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/app/settings/views/settings_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
+import 'package:treevana_user/core/constants.dart';
 import '../controllers/home_controller.dart';
 import 'package:treevana_user/app/common/models/product_model.dart';
 
@@ -19,31 +21,33 @@ class HomeView extends GetView<HomeController> {
       appBar: AppBar(
         title: Text(
           'Treevana',
-          style: theme.textTheme.headlineMedium!.copyWith(
+          style: theme.textTheme.headlineSmall!.copyWith(
             color: Colors.white,
           ),
         ),
-        backgroundColor: Colors.green,
         centerTitle: true,
+        leading: IconButton(
+          onPressed: () => Get.to(() => OrdersView()),
+          icon: const Icon(
+            Icons.shopping_bag_outlined,
+            size: 30,
+          ),
+        ),
         actions: [
           IconButton(
             icon: const Icon(
               Icons.view_headline_outlined,
-              color: Colors.white,
               size: 30,
             ),
             onPressed: () => Get.to(() => SettingsView()),
           ),
         ],
       ),
-      body: Obx(() {
-        final products = controller.products;
-        if (products.isEmpty) {
-          return const Center(
+      body: MyConstants.products.isEmpty ?
+        Center(
             child: Text('No products available right now 🌱'),
-          );
-        }
-        return ListView(
+          ) :
+        ListView(
           padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
           children: [
             SizedBox(height: size.height * 0.02),
@@ -59,16 +63,15 @@ class HomeView extends GetView<HomeController> {
                   child: Text(
                     'View All',
                     style: theme.textTheme.bodyLarge!.copyWith(
-                      color: Colors.green
+                      color: MyConstants.primaryColor
                     ),
                   ),
                 ),
               ],
             ),
-            ...products.map((product) => _ProductCard(product: product)),
+            ...MyConstants.products.map((product) => _ProductCard(product: product)),
           ],
-        );
-      }),
+        ),
     );
   }
 }
@@ -82,55 +85,57 @@ class _ProductCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
-    return SizedBox(
-      height: size.height * 0.15,
-      child: GestureDetector(
+    return GestureDetector(
         onTap: () {
           Get.to(() => ProductView(product: product,));
         },
         child: Card(
-          margin: const EdgeInsets.symmetric(vertical: 8),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          elevation: 2,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.asset(
-                  product.picture,
-                  width: size.width * 0.2,
-                  height: size.width * 0.2,
-                  fit: BoxFit.cover,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 3,
+          margin: EdgeInsets.only(bottom: size.height * 0.02),
+          child: Padding(
+            padding: EdgeInsets.all(size.width * 0.03),
+            child: Row(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    product.picture,
+                    width: size.width * 0.25,
+                    height: size.width * 0.25,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              SizedBox(
-                width: size.width * 0.4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      product.title,
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
+                SizedBox(width: size.width * 0.04),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(product.title,
+                          style: theme.textTheme.titleMedium
+                              ?.copyWith(fontWeight: FontWeight.bold)),
+                      SizedBox(height: size.height * 0.005),
+                      Text(product.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.bodyMedium),
+                      SizedBox(height: size.height * 0.005),
+                      Text(
+                        '\$${product.price.toStringAsFixed(2)}',
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          color: MyConstants.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    Text(
-                      product.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              Text(
-                '\$${product.price.toStringAsFixed(2)}',
-                style: theme.textTheme.bodyMedium,
-              ),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
     );
   }
 

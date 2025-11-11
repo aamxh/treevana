@@ -21,6 +21,7 @@ final lightTheme = ThemeData.light().copyWith(
   ),
   appBarTheme: AppBarTheme(
     foregroundColor: Colors.white,
+    backgroundColor: MyConstants.primaryColor,
   ),
   textTheme: TextTheme(
     headlineLarge: GoogleFonts.roboto(color: Colors.black, fontSize: 30, fontWeight: FontWeight.bold),

@@ -5,6 +5,7 @@ import 'package:treevana_user/app/home/views/home_view.dart';
 import 'package:treevana_user/app/orders/controllers/orders_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_user/app/products/controllers/products_controller.dart';
 
 class AuthWrapperView extends StatelessWidget {
 
@@ -25,6 +26,7 @@ class AuthWrapperView extends StatelessWidget {
         if (tokenIsValid) {
           Get.put(HomeController());
           Get.put(OrdersController());
+          Get.put(ProductsController());
           return HomeView();
         }
         return SignInView();

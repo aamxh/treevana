@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:treevana_user/app/common/models/seller_model.dart';
 import '../../common/models/product_model.dart';
-import '../../common/models/user_model.dart';
 
 part 'order_model.g.dart';
 
@@ -11,7 +11,6 @@ class OrderModel {
 
   final String id;
   final ProductModel product;
-  final UserModel buyer;
   final int quantity;
   final OrderStatus status;
   final DateTime date;
@@ -19,7 +18,6 @@ class OrderModel {
   OrderModel({
     required this.id,
     required this.product,
-    required this.buyer,
     required this.quantity,
     required this.status,
     required this.date,

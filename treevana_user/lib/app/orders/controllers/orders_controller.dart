@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
+import 'package:treevana_user/core/constants.dart';
 import '../models/order_model.dart';
 
 class OrdersController extends GetxController {
 
-  final orders = <OrderModel>[].obs;
+  final orders = MyConstants.orders.obs;
 
   void addOrder(OrderModel order) {
     orders.add(order);
@@ -15,7 +16,6 @@ class OrdersController extends GetxController {
       orders[index] = OrderModel(
         id: orders[index].id,
         product: orders[index].product,
-        buyer: orders[index].buyer,
         quantity: orders[index].quantity,
         status: status,
         date: orders[index].date,
