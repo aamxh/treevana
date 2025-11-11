@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 final lightTheme = ThemeData.light().copyWith(
-  primaryColor: Colors.white,
+  primaryColor: MyConstants.primaryColor,
   scaffoldBackgroundColor: Colors.white,
   colorScheme: ColorScheme.light().copyWith(
     secondary: Colors.black,

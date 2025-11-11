@@ -1,10 +1,10 @@
-import 'package:treevana_user/app/auth/common/auth_api.dart';
-import 'package:treevana_user/app/auth/sign_in/sign_in_view.dart';
+import 'package:treevana_user/app/auth/auth_api.dart';
+import 'package:treevana_user/app/auth/views/sign_in_view.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:treevana_user/app/home/controllers/home_controller.dart';
 import 'package:treevana_user/app/home/views/home_view.dart';
 import 'package:treevana_user/app/orders/controllers/orders_controller.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:treevana_user/app/products/controllers/products_controller.dart';
 
 class AuthWrapperView extends StatelessWidget {
@@ -19,7 +19,7 @@ class AuthWrapperView extends StatelessWidget {
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return Scaffold(body: CircularProgressIndicator(
-            color: theme.colorScheme.secondary,
+            color: theme.primaryColor,
           ),);
         }
         final tokenIsValid = snapshot.data!;

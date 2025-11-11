@@ -1,6 +1,6 @@
 import "package:flutter/material.dart";
 import 'package:get/get.dart';
-import 'package:treevana_user/app/auth/common/auth_wrapper_view.dart';
+import 'package:treevana_user/app/auth/views/auth_wrapper_view.dart';
 import 'package:treevana_user/core/theme.dart';
 
 void main() {
