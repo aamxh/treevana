@@ -28,9 +28,10 @@ class ProductView extends StatelessWidget {
       appBar: AppBar(
         title: Text('Tree Details', style: theme.textTheme.headlineSmall!.copyWith(color: Colors.white)),
         backgroundColor: Colors.green,
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(size.width * 0.05),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -45,36 +46,53 @@ class ProductView extends StatelessWidget {
               ),
             ),
             SizedBox(height: size.height * 0.03),
-            // Title and Price
-            Text(product.title, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
+            Text(
+              product.title,
+              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 5),
             Text(
               '\$${product.price.toStringAsFixed(2)}',
               style: theme.textTheme.titleMedium?.copyWith(color: Colors.green, fontWeight: FontWeight.w600),
             ),
-            const SizedBox(height: 16),
-            // Description
+            const SizedBox(height: 5),
             Text(
               product.description,
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 24),
-            // Seller Info
             Text('Seller', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w600)),
-            const SizedBox(height: 8),
-            ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: CircleAvatar(
-                backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/219/219970.png'),
-              ),
-              title: Text(product.seller.name, style: theme.textTheme.titleSmall),
-              subtitle: Text(product.seller.email, style: theme.textTheme.bodySmall),
+            Row(
+              children: [
+                CircleAvatar(
+                  minRadius: 30,
+                  backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/219/219970.png'),
+                ),
+                const SizedBox(width: 15),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      product.seller.name,
+                      style: theme.textTheme.bodyLarge,
+                    ),
+                    Text(
+                      "Email: ${product.seller.email}",
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    Text(
+                      "Phone: ${product.seller.phoneNumber}",
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+              ],
             ),
-            const SizedBox(height: 32),
-            // Add to orders button
+            SizedBox(height: size.height * 0.08),
             Center(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
+                  elevation: 0,
                   backgroundColor: Colors.green,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -97,7 +115,11 @@ class ProductView extends StatelessWidget {
                     colorText: Colors.green.shade900,
                   );
                 },
-                icon: const Icon(Icons.shopping_bag_outlined, color: Colors.white),
+                icon: const Icon(
+                  Icons.shopping_bag_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ),
                 label: Text(
                   'Request Order',
                   style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
