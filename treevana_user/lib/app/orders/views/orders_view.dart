@@ -49,38 +49,77 @@ class OrdersView extends StatelessWidget {
               margin: EdgeInsets.only(bottom: size.height * 0.02),
               child: Padding(
                 padding: EdgeInsets.all(size.width * 0.03),
-                child: Row(
+                child: Column(
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        product.picture,
-                        width: size.width * 0.25,
-                        height: size.width * 0.25,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    SizedBox(width: size.width * 0.04),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(product.title,
-                              style: theme.textTheme.titleMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold)),
-                          SizedBox(height: size.height * 0.005),
-                          Text('Qty: ${order.quantity}',
-                              style: theme.textTheme.bodyMedium),
-                          SizedBox(height: size.height * 0.005),
-                          Text(
-                            order.status.toString(),
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: _statusColor(order.status.toString()),
-                              fontWeight: FontWeight.w600,
-                            ),
+                    Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.asset(
+                            product.picture,
+                            width: size.width * 0.25,
+                            height: size.width * 0.25,
+                            fit: BoxFit.cover,
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(width: size.width * 0.04),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(product.title,
+                                  style: theme.textTheme.titleMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold)),
+                              SizedBox(height: size.height * 0.005),
+                              Text('Quantity: ${order.quantity}',
+                                  style: theme.textTheme.bodyMedium),
+                              SizedBox(height: size.height * 0.005),
+                              Text(
+                                order.status.name.toUpperCase(),
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: _statusColor(order.status.toString()),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.delete_outline,
+                            size: 30,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: size.height * 0.01,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          minRadius: 30,
+                          backgroundImage: NetworkImage('https://cdn-icons-png.flaticon.com/512/219/219970.png'),
+                        ),
+                        const SizedBox(width: 15),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              product.seller.name,
+                              style: theme.textTheme.bodyLarge,
+                            ),
+                            Text(
+                              "Email: ${product.seller.email}",
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                            Text(
+                              "Phone: ${product.seller.phoneNumber}",
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ],
                 ),
