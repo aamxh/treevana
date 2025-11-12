@@ -8,6 +8,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_user/core/helpers.dart';
 
 class SignInView extends StatelessWidget {
 
@@ -83,8 +84,7 @@ class SignInView extends StatelessWidget {
                 //cursorColor: MyConstants.primaryC,
                 style: theme.textTheme.bodyLarge,
                 controller: _passwordCtrl,
-                // validator: (val) => MyHelpers.validatePassword(val!),
-                validator: (val) => null,
+                validator: (val) => MyHelpers.validatePassword(val!, val),
                 decoration: InputDecoration(
                   hintText: 'Ex: 22GAh^sg@',
                   hintStyle: theme.textTheme.bodyLarge!.copyWith(
@@ -135,6 +135,7 @@ class SignInView extends StatelessWidget {
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(size.width * 0.5, size.height * 0.064),
+                    elevation: 0,
                   ),
                   child: Text(
                     'Sign-in',
@@ -187,9 +188,7 @@ class SignInView extends StatelessWidget {
                   child:
                   Text(
                     'Sign-in with Google',
-                    style: theme.textTheme.titleSmall!.copyWith(
-                      color: theme.colorScheme.secondary,
-                    ),
+                    style: theme.textTheme.titleSmall,
                   ),
                 ),
               ),

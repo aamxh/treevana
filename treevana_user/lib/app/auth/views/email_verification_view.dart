@@ -7,9 +7,9 @@ import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import '../../home/views/home_view.dart';
 
-class EmailVerificationV extends StatelessWidget {
+class EmailVerificationView extends StatelessWidget {
 
-  EmailVerificationV({super.key});
+  EmailVerificationView({super.key});
 
   final _ctrl = Get.find<EmailVerificationController>();
 

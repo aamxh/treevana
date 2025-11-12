@@ -5,9 +5,9 @@ import "package:get/get.dart";
 import "package:pinput/pinput.dart";
 import 'package:treevana_user/app/auth/views/sign_up_view.dart';
 
-class PhoneNumberVerificationV extends StatelessWidget {
+class PhoneNumberVerificationView extends StatelessWidget {
 
-  PhoneNumberVerificationV({super.key});
+  PhoneNumberVerificationView({super.key});
 
   final _textCtrl = TextEditingController();
   final _numCtrl = Get.find<PhoneNumberVerificationController>();

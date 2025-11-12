@@ -1,3 +1,4 @@
+import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
 import 'package:treevana_user/app/auth/views/sign_in_view.dart';
 import 'package:treevana_user/app/auth/views/email_verification_view.dart';
 import 'package:treevana_user/core/constants.dart';
@@ -5,6 +6,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_user/core/helpers.dart';
 
 class SignUpView extends StatelessWidget {
 
@@ -14,6 +16,7 @@ class SignUpView extends StatelessWidget {
   final _emailCtrl = TextEditingController();
   final _password1Ctrl = TextEditingController();
   final _password2Ctrl = TextEditingController();
+  final _phoneCtrl = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -28,14 +31,14 @@ class SignUpView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: size.height * 0.15,),
+              SizedBox(height: size.height * 0.08,),
               Center(
                 child: Text(
-                  'Complete your profile',
+                  'Creating a new account',
                   style: theme.textTheme.headlineMedium,
                 ),
               ),
-              SizedBox(height: size.height * 0.064,),
+              SizedBox(height: size.height * 0.04,),
               Text(
                 'Your name',
                 style: theme.textTheme.bodyLarge,
@@ -100,10 +103,39 @@ class SignUpView extends StatelessWidget {
                 cursorColor: MyConstants.primaryColor,
                 style: theme.textTheme.bodyLarge,
                 keyboardType: TextInputType.emailAddress,
-                validator: (val) {
-                  return EmailValidator.validate(val!) ? null :
-                      'Invalid email!';
-                },
+                validator: (val) => MyHelpers.validateEmail(val!),
+              ),
+              SizedBox(height: size.height * 0.03,),
+              Text(
+                'Your phone number (optional)',
+                style: theme.textTheme.bodyLarge,
+              ),
+              SizedBox(height: size.height * 0.01),
+              TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Ex: 0655173633',
+                  hintStyle: theme.textTheme.bodyLarge!.copyWith(
+                    color: MyConstants.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      width: 2,
+                    ),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: MyConstants.primaryColor,
+                      width: 2,
+                    ),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                controller: _phoneCtrl,
+                cursorColor: MyConstants.primaryColor,
+                style: theme.textTheme.bodyLarge,
+                keyboardType: TextInputType.phone,
+                validator: (val) => MyHelpers.validatePhone(val!),
               ),
               SizedBox(height: size.height * 0.03,),
               Text(
@@ -136,7 +168,7 @@ class SignUpView extends StatelessWidget {
                 cursorColor: MyConstants.primaryColor,
                 style: theme.textTheme.bodyLarge,
                 obscureText: true,
-                //validator: (val) => MyHelpers.validatePassword(val!),
+                validator: (val) => MyHelpers.validatePassword(val!, _password2Ctrl.text.trim()),
               ),
               SizedBox(height: size.height * 0.03,),
               Text(
@@ -169,14 +201,15 @@ class SignUpView extends StatelessWidget {
                 cursorColor: MyConstants.primaryColor,
                 style: theme.textTheme.bodyLarge,
                 obscureText: true,
-                //validator: (val) => MyHelpers.validatePassword(val!),
+                validator: (val) => MyHelpers.validatePassword(val!, _password1Ctrl.text.trim()),
               ),
               SizedBox(height: size.height * 0.04,),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Get.to(() => EmailVerificationV());
+                      Get.put(EmailVerificationController());
+                      Get.to(() => EmailVerificationView());
                     }
                   },
                   style: ElevatedButton.styleFrom(
@@ -210,7 +243,6 @@ class SignUpView extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: size.height * 0.1,),
             ],
           ),
         ),
