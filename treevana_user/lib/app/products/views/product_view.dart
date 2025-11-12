@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_user/app/common/models/product_model.dart';
+import 'package:treevana_user/app/orders/views/order_view.dart';
 import 'package:treevana_user/core/constants.dart';
 import '../../orders/controllers/orders_controller.dart';
 import 'package:treevana_user/app/auth/models/user_model.dart';
@@ -98,25 +99,9 @@ class ProductView extends StatelessWidget {
                   elevation: 0,
                   backgroundColor: MyConstants.primaryColor,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 ),
-                onPressed: () {
-                  final order = OrderModel(
-                    id: const Uuid().v4(),
-                    product: product,
-                    quantity: 1,
-                    status: OrderStatus.pending,
-                    date: DateTime.now(),
-                  );
-                  ordersController.addOrder(order);
-                  Get.snackbar(
-                    'Order Added',
-                    'Your request for ${product.title} was sent to the seller.',
-                    snackPosition: SnackPosition.BOTTOM,
-                    backgroundColor: Colors.green.shade50,
-                    colorText: Colors.green.shade900,
-                  );
-                },
+                onPressed: () => Get.to(() => OrderView(productName: product.title)),
                 icon: const Icon(
                   Icons.shopping_bag_outlined,
                   color: Colors.white,

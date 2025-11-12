@@ -4,20 +4,23 @@ import 'package:treevana_user/app/orders/views/orders_view.dart';
 import 'package:treevana_user/app/products/views/product_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/app/settings/views/settings_view.dart';
-import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/core/constants.dart';
 import '../controllers/home_controller.dart';
 import 'package:treevana_user/app/common/models/product_model.dart';
 
 class HomeView extends GetView<HomeController> {
 
-  const HomeView({super.key});
+  HomeView({super.key});
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
     return Scaffold(
+      key: _scaffoldKey,
+      drawer: const SettingsView(),
       appBar: AppBar(
         title: Text(
           'Treevana',
@@ -27,19 +30,19 @@ class HomeView extends GetView<HomeController> {
         ),
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => Get.to(() => OrdersView()),
           icon: const Icon(
-            Icons.shopping_bag_outlined,
+            Icons.view_headline_outlined,
             size: 30,
           ),
+          onPressed: () => _scaffoldKey.currentState!.openDrawer(),
         ),
         actions: [
           IconButton(
+            onPressed: () => Get.to(() => OrdersView()),
             icon: const Icon(
-              Icons.view_headline_outlined,
+              Icons.shopping_bag_outlined,
               size: 30,
             ),
-            onPressed: () => Get.to(() => SettingsView()),
           ),
         ],
       ),

@@ -1,5 +1,7 @@
-import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:treevana_user/app/auth/views/welcome_view.dart';
+import 'package:treevana_user/core/constants.dart';
 
 class SettingsView extends StatelessWidget {
 
@@ -7,7 +9,72 @@ class SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(),);
+    final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    return Drawer(
+      child: Container(
+        color: theme.colorScheme.surface,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                color: theme.primaryColor,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CircleAvatar(
+                    radius: size.width * 0.08,
+                    backgroundImage: const NetworkImage(
+                      'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    'John Doe',
+                    style: theme.textTheme.titleLarge!.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    'john.doe@email.com',
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                      color: Colors.white70,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.person_outline),
+              title: Text('Profile', style: theme.textTheme.bodyLarge),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.notifications_outlined),
+              title: Text('Notifications', style: theme.textTheme.bodyLarge),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: const Icon(Icons.lock_outline),
+              title: Text('Privacy', style: theme.textTheme.bodyLarge),
+              onTap: () {},
+            ),
+            ListTile(
+              leading: Icon(Icons.logout, color: MyConstants.errorColor),
+              title: Text(
+                'Logout',
+                style: theme.textTheme.bodyLarge!.copyWith(color: MyConstants.errorColor),
+              ),
+              onTap: () => Get.offAll(() => WelcomeView()),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
   }
 
 }
