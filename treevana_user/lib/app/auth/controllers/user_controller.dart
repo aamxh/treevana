@@ -4,7 +4,14 @@ import 'package:treevana_user/app/auth/models/user_model.dart';
 
 class UserController extends GetxController {
 
-  late final Rxn<UserModel> user;
+  final Rx<UserModel> user = UserModel(
+    id: '',
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    avatar: ''
+  ).obs;
 
   @override
   void onInit() {
@@ -14,7 +21,9 @@ class UserController extends GetxController {
 
   Future<void> _loadUser() async {
     try {
-      user.value = await AuthApi.getProfile();
+      final res = await AuthApi.getProfile();
+      if (res == null) return;
+      user.value = res;
     } catch (ex) {
       print("Failed to load user profile: $ex");
     }

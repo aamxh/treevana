@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_user/app/orders/views/orders_view.dart';
+import 'package:treevana_user/app/products/controllers/products_controller.dart';
 import 'package:treevana_user/app/products/views/product_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/app/settings/views/settings_view.dart';
@@ -18,6 +19,7 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
+    final ctrl = Get.find<ProductsController>();
     return Scaffold(
       key: _scaffoldKey,
       drawer: const SettingsView(),
@@ -46,7 +48,7 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-      body: MyConstants.products.isEmpty ?
+      body: ctrl.products.value!.isEmpty ?
         Center(
             child: Text('No products available right now 🌱'),
           ) :
@@ -72,7 +74,7 @@ class HomeView extends GetView<HomeController> {
                 ),
               ],
             ),
-            ...MyConstants.products.map((product) => _ProductCard(product: product)),
+            ...ctrl.products.value!.map((product) => _ProductCard(product: product)),
           ],
         ),
     );

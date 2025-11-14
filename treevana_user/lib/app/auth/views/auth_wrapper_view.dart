@@ -1,4 +1,5 @@
 import 'package:treevana_user/app/auth/auth_api.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/views/welcome_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -27,6 +28,7 @@ class AuthWrapperView extends StatelessWidget {
         }
         final tokenIsValid = snapshot.data!;
         if (tokenIsValid) {
+          Get.put(UserController());
           return HomeView();
         }
         return WelcomeView();

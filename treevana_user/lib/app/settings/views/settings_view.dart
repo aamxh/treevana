@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_user/app/auth/auth_api.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/views/welcome_view.dart';
 import 'package:treevana_user/core/constants.dart';
 
@@ -12,6 +13,7 @@ class SettingsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
+    final userCtrl = Get.find<UserController>();
     return Drawer(
       child: Container(
         color: theme.colorScheme.surface,
@@ -33,14 +35,14 @@ class SettingsView extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    'John Doe',
+                    userCtrl.user.value!.name,
                     style: theme.textTheme.titleLarge!.copyWith(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                   Text(
-                    'john.doe@email.com',
+                    userCtrl.user.value!.email,
                     style: theme.textTheme.bodyMedium!.copyWith(
                       color: Colors.white70,
                     ),
