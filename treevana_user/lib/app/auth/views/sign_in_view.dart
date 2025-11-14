@@ -1,4 +1,5 @@
 import 'package:treevana_user/app/auth/auth_api.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/views/reset_password_view.dart';
 import 'package:treevana_user/app/auth/views/google_sign_in_view.dart';
 import 'package:treevana_user/app/auth/views/sign_up_view.dart';
@@ -126,9 +127,15 @@ class SignInView extends StatelessWidget {
                         ),),
                         barrierDismissible: false,
                       );
-                      //final res = await AuthApi.signIn();
-                      Get.back();
-                      Get.offAll(() => HomeView());
+                      final res = await AuthApi.signIn(
+                        email: _emailCtrl.text.trim(),
+                        password: _passwordCtrl.text.trim(),
+                      );
+                      if (res) {
+                        Get.put(UserController());
+                        Get.back();
+                        Get.to(() => HomeView());
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(

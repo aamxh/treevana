@@ -23,8 +23,8 @@ class ProductView extends StatelessWidget {
       name: 'Demo User',
       email: 'demo@treevana.com',
       password: '',
-      phoneNumber: '+213 555 123 456',
-      picture: 'https://cdn-icons-png.flaticon.com/512/219/219970.png',
+      phone: '+213 555 123 456',
+      avatar: 'https://cdn-icons-png.flaticon.com/512/219/219970.png',
     );
     return Scaffold(
       appBar: AppBar(

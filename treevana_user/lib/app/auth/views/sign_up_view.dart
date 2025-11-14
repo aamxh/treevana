@@ -1,12 +1,17 @@
 import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
+import 'package:treevana_user/app/auth/models/user_model.dart';
 import 'package:treevana_user/app/auth/views/sign_in_view.dart';
 import 'package:treevana_user/app/auth/views/email_verification_view.dart';
+import 'package:treevana_user/app/home/views/home_view.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_user/core/helpers.dart';
+
+import '../auth_api.dart';
 
 class SignUpView extends StatelessWidget {
 
@@ -208,8 +213,28 @@ class SignUpView extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      Get.put(EmailVerificationController());
-                      Get.to(() => EmailVerificationView());
+                      //Get.put(EmailVerificationController());
+                      //Get.to(() => EmailVerificationView());
+                      Get.dialog(
+                        Center(child: CircularProgressIndicator(
+                          color: MyConstants.primaryColor,
+                        ),),
+                        barrierDismissible: false,
+                      );
+                      final user = UserModel(
+                        name: _nameCtrl.text.trim(),
+                        email: _emailCtrl.text.trim(),
+                        phone: _phoneCtrl.text.trim(),
+                        avatar: '',
+                        id: '',
+                        password: _password1Ctrl.text.trim(),
+                      );
+                      final res = await AuthApi.signUp(user);
+                      if (res) {
+                        Get.put(UserController());
+                        Get.back();
+                        Get.to(() => HomeView());
+                      }
                     }
                   },
                   style: ElevatedButton.styleFrom(

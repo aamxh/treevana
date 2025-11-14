@@ -31,9 +31,12 @@ class AuthApi {
     }
   }
 
-  static Future<bool> signIn(UserModel user) async {
+  static Future<bool> signIn({
+    required String email,
+    required String password,
+  }) async {
     try {
-      final json = jsonEncode(user.toJson());
+      final json = jsonEncode({"email": email, "password": password});
       final res = await dio.post("${MyConstants.baseUrl}api/auth/login", data: json);
       if (MyHelpers.isResOk(res.statusCode!)) {
         await saveAccessToken(
@@ -70,13 +73,14 @@ class AuthApi {
   }
 
   static Future<bool> signOut() async {
-    bool res = true;
     try {
+      final response = await dio.post("${MyConstants.baseUrl}api/auth/logout");
+      bool result = MyHelpers.isResOk(response.statusCode!);
       final refs = await SharedPreferences.getInstance();
-      res = res & await refs.remove('access_token');
-      res = res & await refs.remove('refresh_token');
-      res = res & await refs.remove('token_expiry');
-      return res;
+      result = result & await refs.remove('access_token');
+      result = result & await refs.remove('refresh_token');
+      result = result & await refs.remove('token_expiry');
+      return result;
     } catch (ex) {
       print(ex);
       return false;
@@ -100,7 +104,7 @@ class AuthApi {
     if (refreshToken == null) return false;
     try {
       final response = await dio.post(
-        "$MyConstants.baseUrl/api/auth/token/refresh/",
+        "${MyConstants.baseUrl}api/auth/token/refresh/",
         data: {'token': refreshToken},
       );
       final newAccessToken = response.data['access_token'];
@@ -119,6 +123,19 @@ class AuthApi {
 
     } catch(ex) {
       print(ex);
+    }
+  }
+
+  static Future<UserModel?> getProfile() async {
+    try {
+      final res = await dio.get("${MyConstants.baseUrl}api/auth/me");
+      if (MyHelpers.isResOk(res.statusCode!)) {
+        return UserModel.fromJson(jsonDecode(res.data));
+      }
+      return null;
+    } catch(ex) {
+      print(ex);
+      return null;
     }
   }
 
