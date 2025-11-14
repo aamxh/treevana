@@ -13,7 +13,8 @@ class AuthApi {
 
   static Future<bool> isUserAuthenticated() async {
     if (await isTokenValid()) return true;
-    return await tryRefreshToken();
+    return false;
+    //return await tryRefreshToken();
   }
 
   static Future<bool> isTokenValid() async {
@@ -40,8 +41,7 @@ class AuthApi {
       final res = await dio.post("${MyConstants.baseUrl}api/auth/login", data: json);
       if (MyHelpers.isResOk(res.statusCode!)) {
         await saveAccessToken(
-          res.data['tokens']['access'],
-          res.data['tokens']['refresh'],
+          res.data['token'],
           DateTime.now().add(const Duration(days: 30)),
         );
         return true;
@@ -55,12 +55,11 @@ class AuthApi {
 
   static Future<bool> signUp(UserModel user) async {
     try {
-      final json = jsonEncode(user.toJson());
+      final json = jsonEncode(user.toJson()..addAll({"role": "user"}));
       final res = await dio.post("${MyConstants.baseUrl}api/auth/register", data: json);
       if (MyHelpers.isResOk(res.statusCode!)) {
         await saveAccessToken(
-          res.data['tokens']['access'],
-          res.data['tokens']['refresh'],
+          res.data['token'],
           DateTime.now().add(const Duration(days: 30)),
         );
         return true;
@@ -89,12 +88,10 @@ class AuthApi {
 
   static Future<void> saveAccessToken(
       String accessToken,
-      String refreshToken,
       DateTime expiryDate,
       ) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('access_token', accessToken);
-    await prefs.setString('refresh_token', refreshToken);
     await prefs.setString('token_expiry', expiryDate.toIso8601String());
   }
 
@@ -118,6 +115,11 @@ class AuthApi {
     }
   }
 
+  static Future<String?> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
+
   static Future<void> initializeProfile(String token) async {
     try {
 
@@ -128,9 +130,11 @@ class AuthApi {
 
   static Future<UserModel?> getProfile() async {
     try {
-      final res = await dio.get("${MyConstants.baseUrl}api/auth/me");
+      final token = await getAccessToken();
+      if (token == null) return null;
+      final res = await dio.get("${MyConstants.baseUrl}api/auth/me?token=$token");
       if (MyHelpers.isResOk(res.statusCode!)) {
-        return UserModel.fromJson(jsonDecode(res.data));
+        return UserModel.fromJson(jsonDecode(res.data['user']));
       }
       return null;
     } catch(ex) {

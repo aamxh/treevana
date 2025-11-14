@@ -6,7 +6,7 @@ import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/app/settings/views/settings_view.dart';
 import 'package:treevana_user/core/constants.dart';
 import '../controllers/home_controller.dart';
-import 'package:treevana_user/app/common/models/product_model.dart';
+import 'package:treevana_user/app/products/models/product_model.dart';
 
 class HomeView extends GetView<HomeController> {
 

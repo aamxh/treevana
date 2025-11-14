@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:treevana_user/app/common/models/product_model.dart';
+import 'package:treevana_user/app/products/models/product_model.dart';
 import 'package:treevana_user/app/common/models/seller_model.dart';
 
 class HomeController extends GetxController {

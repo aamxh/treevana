@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/common/models/product_model.dart';
+import 'package:treevana_user/app/products/models/product_model.dart';
 import 'package:treevana_user/app/orders/views/order_view.dart';
 import 'package:treevana_user/core/constants.dart';
 import '../../orders/controllers/orders_controller.dart';
 import 'package:treevana_user/app/auth/models/user_model.dart';
-import 'package:treevana_user/app/orders/models/order_model.dart';
-import 'package:uuid/uuid.dart';
 
 class ProductView extends StatelessWidget {
 

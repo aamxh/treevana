@@ -1,10 +1,11 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'seller_model.dart';
+import '../../common/models/seller_model.dart';
 
 part 'product_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ProductModel {
+
   final String id;
   final String title;
   final String description;

@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:treevana_user/app/common/models/seller_model.dart';
-import '../../common/models/product_model.dart';
+import '../../products/models/product_model.dart';
 
 part 'order_model.g.dart';
 

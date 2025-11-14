@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_user/app/auth/auth_api.dart';
 import 'package:treevana_user/app/auth/views/welcome_view.dart';
 import 'package:treevana_user/core/constants.dart';
 
@@ -68,7 +69,12 @@ class SettingsView extends StatelessWidget {
                 'Logout',
                 style: theme.textTheme.bodyLarge!.copyWith(color: MyConstants.errorColor),
               ),
-              onTap: () => Get.offAll(() => WelcomeView()),
+              onTap: () async {
+                final res = await AuthApi.signOut();
+                if (res) {
+                  Get.offAll(() => WelcomeView());
+                }
+              },
             ),
             const SizedBox(height: 10),
           ],
