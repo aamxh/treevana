@@ -92,7 +92,7 @@ class EmailVerificationView extends StatelessWidget {
                     );
                     final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
                     if (res) {
-                      final res = await AuthApi.signUp();
+                      //final res = await AuthApi.signUp();
                       Get.back();
                       if (res) {
                         Get.offAll(() => HomeView());

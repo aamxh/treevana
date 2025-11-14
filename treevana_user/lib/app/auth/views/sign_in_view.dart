@@ -126,11 +126,9 @@ class SignInView extends StatelessWidget {
                         ),),
                         barrierDismissible: false,
                       );
-                      final res = await AuthApi.signIn();
+                      //final res = await AuthApi.signIn();
                       Get.back();
-                      if (res) {
-                        Get.offAll(() => HomeView());
-                      }
+                      Get.offAll(() => HomeView());
                     }
                   },
                   style: ElevatedButton.styleFrom(

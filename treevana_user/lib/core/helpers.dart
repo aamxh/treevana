@@ -29,6 +29,7 @@ class MyHelpers {
   }
 
   static String? validatePhone(String val) {
+    if (val.isEmpty) return "Phone number field cannot be empty!";
     if (val.length != 10 && val.isNotEmpty) return "Invalid phone number!";
     return null;
   }
