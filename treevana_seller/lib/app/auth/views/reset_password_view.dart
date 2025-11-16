@@ -1,4 +1,4 @@
-import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_seller/core/constants.dart';
 import 'package:flutter/material.dart';
 
 class ResetPasswordView extends StatelessWidget {

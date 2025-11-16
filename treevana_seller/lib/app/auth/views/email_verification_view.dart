@@ -1,15 +1,15 @@
-import 'package:treevana_user/app/auth/auth_api.dart';
-import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
-import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_seller/app/auth/auth_api.dart';
+import 'package:treevana_seller/app/auth/controllers/email_verification_controller.dart';
+import 'package:treevana_seller/core/constants.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 import '../../home/views/home_view.dart';
 
-class EmailVerificationV extends StatelessWidget {
+class EmailVerificationView extends StatelessWidget {
 
-  EmailVerificationV({super.key});
+  EmailVerificationView({super.key});
 
   final _ctrl = Get.find<EmailVerificationController>();
 
@@ -92,7 +92,7 @@ class EmailVerificationV extends StatelessWidget {
                     );
                     final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
                     if (res) {
-                      final res = await AuthApi.signUp();
+                      //final res = await AuthApi.signUp();
                       Get.back();
                       if (res) {
                         Get.offAll(() => HomeView());

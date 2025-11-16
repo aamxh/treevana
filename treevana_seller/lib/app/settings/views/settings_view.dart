@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/auth/auth_api.dart';
-import 'package:treevana_user/app/auth/controllers/user_controller.dart';
-import 'package:treevana_user/app/auth/views/welcome_view.dart';
-import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_seller/app/auth/auth_api.dart';
+import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/auth/views/welcome_view.dart';
+import 'package:treevana_seller/core/constants.dart';
 
 class SettingsView extends StatelessWidget {
 

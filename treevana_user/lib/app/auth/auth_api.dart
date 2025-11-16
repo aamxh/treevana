@@ -134,7 +134,7 @@ class AuthApi {
       if (token == null) return null;
       final res = await dio.get("${MyConstants.baseUrl}api/auth/me?token=$token");
       if (MyHelpers.isResOk(res.statusCode!)) {
-        return UserModel.fromJson(jsonDecode(res.data['user']));
+        return UserModel.fromJson(res.data['user']);
       }
       return null;
     } catch(ex) {

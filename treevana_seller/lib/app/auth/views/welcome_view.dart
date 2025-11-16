@@ -1,9 +1,9 @@
-import 'package:treevana_user/app/auth/controllers/user_controller.dart';
-import 'package:treevana_user/app/auth/views/sign_up_view.dart';
-import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/auth/views/sign_up_view.dart';
+import 'package:treevana_seller/core/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/auth/views/sign_in_view.dart';
+import 'package:treevana_seller/app/auth/views/sign_in_view.dart';
 
 class WelcomeView extends StatelessWidget {
 
@@ -18,18 +18,26 @@ class WelcomeView extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: size.width * 0.1),
         child: Column(
           children: [
-            SizedBox(height: size.height * 0.1,),
+            SizedBox(height: size.height * 0.3,),
             //Image.asset('assets/images/logo.png'),
-            Text(
-              'Welcome to Treevana',
-              style: theme.textTheme.headlineMedium,
+            RichText(
+              text: TextSpan(
+                text: 'Welcome to ',
+                style: theme.textTheme.headlineMedium,
+                children: [
+                  TextSpan(
+                    text: 'Treevana',
+                    style: theme.textTheme.headlineMedium!.copyWith(
+                      color: MyConstants.primaryColor,
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: size.height * 0.03,),
             Text(
               'Sign in or create an account to start!',
-              style: theme.textTheme.bodyLarge!.copyWith(
-                color: MyConstants.grey,
-              ),
+              style: theme.textTheme.bodyLarge!,
               textAlign: TextAlign.center,
             ),
             SizedBox(height: size.height * 0.15,),

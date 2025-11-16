@@ -1,13 +1,15 @@
-import 'package:treevana_user/app/auth/auth_api.dart';
-import 'package:treevana_user/app/auth/views/reset_password_view.dart';
-import 'package:treevana_user/app/auth/views/google_sign_in_view.dart';
-import 'package:treevana_user/app/auth/views/sign_up_view.dart';
-import 'package:treevana_user/app/home/views/home_view.dart';
-import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_seller/app/auth/auth_api.dart';
+import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/auth/views/reset_password_view.dart';
+import 'package:treevana_seller/app/auth/views/google_sign_in_view.dart';
+import 'package:treevana_seller/app/auth/views/sign_up_view.dart';
+import 'package:treevana_seller/app/home/views/home_view.dart';
+import 'package:treevana_seller/core/constants.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_seller/core/helpers.dart';
 
 class SignInView extends StatelessWidget {
 
@@ -83,8 +85,7 @@ class SignInView extends StatelessWidget {
                 //cursorColor: MyConstants.primaryC,
                 style: theme.textTheme.bodyLarge,
                 controller: _passwordCtrl,
-                // validator: (val) => MyHelpers.validatePassword(val!),
-                validator: (val) => null,
+                validator: (val) => MyHelpers.validatePassword(val!, val),
                 decoration: InputDecoration(
                   hintText: 'Ex: 22GAh^sg@',
                   hintStyle: theme.textTheme.bodyLarge!.copyWith(
@@ -126,15 +127,20 @@ class SignInView extends StatelessWidget {
                         ),),
                         barrierDismissible: false,
                       );
-                      final res = await AuthApi.signIn();
-                      Get.back();
+                      final res = await AuthApi.signIn(
+                        email: _emailCtrl.text.trim(),
+                        password: _passwordCtrl.text.trim(),
+                      );
                       if (res) {
-                        Get.offAll(() => HomeView());
+                        Get.put(UserController());
+                        Get.back();
+                        Get.to(() => HomeView());
                       }
                     }
                   },
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(size.width * 0.5, size.height * 0.064),
+                    elevation: 0,
                   ),
                   child: Text(
                     'Sign-in',
@@ -187,9 +193,7 @@ class SignInView extends StatelessWidget {
                   child:
                   Text(
                     'Sign-in with Google',
-                    style: theme.textTheme.titleSmall!.copyWith(
-                      color: theme.colorScheme.secondary,
-                    ),
+                    style: theme.textTheme.titleSmall,
                   ),
                 ),
               ),

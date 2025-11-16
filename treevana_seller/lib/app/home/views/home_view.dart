@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/orders/views/orders_view.dart';
-import 'package:treevana_user/app/products/controllers/products_controller.dart';
-import 'package:treevana_user/app/products/views/product_view.dart';
-import 'package:treevana_user/app/products/views/products_view.dart';
-import 'package:treevana_user/app/settings/views/settings_view.dart';
-import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_seller/app/orders/views/orders_view.dart';
+import 'package:treevana_seller/app/products/controllers/products_controller.dart';
+import 'package:treevana_seller/app/products/views/product_view.dart';
+import 'package:treevana_seller/app/products/views/products_view.dart';
+import 'package:treevana_seller/app/settings/views/settings_view.dart';
+import 'package:treevana_seller/core/constants.dart';
 import '../controllers/home_controller.dart';
-import 'package:treevana_user/app/products/models/product_model.dart';
+import 'package:treevana_seller/app/products/models/product_model.dart';
 
 class HomeView extends GetView<HomeController> {
 

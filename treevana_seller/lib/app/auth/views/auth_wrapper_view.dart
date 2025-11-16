@@ -1,11 +1,12 @@
-import 'package:treevana_user/app/auth/auth_api.dart';
-import 'package:treevana_user/app/auth/views/sign_in_view.dart';
+import 'package:treevana_seller/app/auth/auth_api.dart';
+import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/auth/views/welcome_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/home/controllers/home_controller.dart';
-import 'package:treevana_user/app/home/views/home_view.dart';
-import 'package:treevana_user/app/orders/controllers/orders_controller.dart';
-import 'package:treevana_user/app/products/controllers/products_controller.dart';
+import 'package:treevana_seller/app/home/controllers/home_controller.dart';
+import 'package:treevana_seller/app/home/views/home_view.dart';
+import 'package:treevana_seller/app/orders/controllers/orders_controller.dart';
+import 'package:treevana_seller/app/products/controllers/products_controller.dart';
 
 class AuthWrapperView extends StatelessWidget {
 
@@ -17,6 +18,9 @@ class AuthWrapperView extends StatelessWidget {
     return FutureBuilder(
       future: AuthApi.isUserAuthenticated(),
       builder: (context, snapshot) {
+        Get.put(HomeController());
+        Get.put(OrdersController());
+        Get.put(ProductsController());
         if (!snapshot.hasData) {
           return Scaffold(body: CircularProgressIndicator(
             color: theme.primaryColor,
@@ -24,12 +28,10 @@ class AuthWrapperView extends StatelessWidget {
         }
         final tokenIsValid = snapshot.data!;
         if (tokenIsValid) {
-          Get.put(HomeController());
-          Get.put(OrdersController());
-          Get.put(ProductsController());
+          Get.put(UserController());
           return HomeView();
         }
-        return SignInView();
+        return WelcomeView();
       },
     );
   }

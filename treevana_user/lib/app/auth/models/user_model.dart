@@ -5,11 +5,14 @@ part 'user_model.g.dart';
 @JsonSerializable()
 class UserModel {
 
+  @JsonKey(name: '_id')
   final String id;
   final String name;
   final String email;
+  @JsonKey(defaultValue: '')
   final String password;
   final String phone;
+  @JsonKey(defaultValue: '')
   final String avatar;
 
   UserModel({

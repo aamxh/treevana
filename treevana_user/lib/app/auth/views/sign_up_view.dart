@@ -1,11 +1,8 @@
-import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
 import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/models/user_model.dart';
 import 'package:treevana_user/app/auth/views/sign_in_view.dart';
-import 'package:treevana_user/app/auth/views/email_verification_view.dart';
 import 'package:treevana_user/app/home/views/home_view.dart';
 import 'package:treevana_user/core/constants.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -112,7 +109,7 @@ class SignUpView extends StatelessWidget {
               ),
               SizedBox(height: size.height * 0.03,),
               Text(
-                'Your phone number (optional)',
+                'Your phone number',
                 style: theme.textTheme.bodyLarge,
               ),
               SizedBox(height: size.height * 0.01),

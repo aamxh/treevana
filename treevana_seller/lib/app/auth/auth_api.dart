@@ -1,37 +1,145 @@
-import 'package:treevana_user/core/helpers.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:treevana_seller/app/auth/models/user_model.dart';
+import 'package:treevana_seller/core/constants.dart';
+import 'package:treevana_seller/core/helpers.dart';
 import 'package:dio/dio.dart';
-import 'package:treevana_user/core/helpers.dart';
 
 class AuthApi {
 
   AuthApi._();
 
-  final dio = Dio();
+  static final dio = Dio();
 
   static Future<bool> isUserAuthenticated() async {
+    if (await isTokenValid()) return true;
+    return false;
+    //return await tryRefreshToken();
+  }
+
+  static Future<bool> isTokenValid() async {
     try {
-      return true;
+      final prefs = await SharedPreferences.getInstance();
+      final token = prefs.getString('access_token');
+      final expiry = prefs.getString('token_expiry');
+      if (token == null || expiry == null) return false;
+      final expiryDate = DateTime.tryParse(expiry);
+      if (expiryDate == null) return false;
+      return DateTime.now().isBefore(expiryDate.subtract(const Duration(minutes: 1)));
+    } on Exception catch (e) {
+      print(e);
+      return false;
+    }
+  }
+
+  static Future<bool> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final json = jsonEncode({"email": email, "password": password});
+      final res = await dio.post("${MyConstants.baseUrl}api/auth/login", data: json);
+      if (MyHelpers.isResOk(res.statusCode!)) {
+        await saveAccessToken(
+          res.data['token'],
+          DateTime.now().add(const Duration(days: 30)),
+        );
+        return true;
+      }
+      return false;
     } catch(ex) {
       MyHelpers.showError(ex.toString());
       return false;
     }
   }
 
-  static Future<bool> signIn() async {
+  static Future<bool> signUp(UserModel user) async {
     try {
-      return true;
+      final json = jsonEncode(user.toJson()..addAll({"role": "user"}));
+      final res = await dio.post("${MyConstants.baseUrl}api/auth/register", data: json);
+      if (MyHelpers.isResOk(res.statusCode!)) {
+        await saveAccessToken(
+          res.data['token'],
+          DateTime.now().add(const Duration(days: 30)),
+        );
+        return true;
+      }
+      return false;
     } catch(ex) {
       MyHelpers.showError(ex.toString());
       return false;
     }
   }
 
-  static Future<bool> signUp() async {
+  static Future<bool> signOut() async {
     try {
-      return true;
-    } catch(ex) {
-      MyHelpers.showError(ex.toString());
+      final response = await dio.post("${MyConstants.baseUrl}api/auth/logout");
+      bool result = MyHelpers.isResOk(response.statusCode!);
+      final refs = await SharedPreferences.getInstance();
+      result = result & await refs.remove('access_token');
+      result = result & await refs.remove('refresh_token');
+      result = result & await refs.remove('token_expiry');
+      return result;
+    } catch (ex) {
+      print(ex);
       return false;
+    }
+  }
+
+  static Future<void> saveAccessToken(
+      String accessToken,
+      DateTime expiryDate,
+      ) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', accessToken);
+    await prefs.setString('token_expiry', expiryDate.toIso8601String());
+  }
+
+  static Future<bool> tryRefreshToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    final refreshToken = prefs.getString('refresh_token');
+    if (refreshToken == null) return false;
+    try {
+      final response = await dio.post(
+        "${MyConstants.baseUrl}api/auth/token/refresh/",
+        data: {'token': refreshToken},
+      );
+      final newAccessToken = response.data['access_token'];
+      final newExpiry = DateTime.now().add(const Duration(days: 7));
+      await prefs.setString('access_token', newAccessToken);
+      await prefs.setString('token_expiry', newExpiry.toIso8601String());
+      return true;
+    } on Exception catch (ex) {
+      print(ex);
+      return false;
+    }
+  }
+
+  static Future<String?> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
+
+  static Future<void> initializeProfile(String token) async {
+    try {
+
+    } catch(ex) {
+      print(ex);
+    }
+  }
+
+  static Future<UserModel?> getProfile() async {
+    try {
+      final token = await getAccessToken();
+      if (token == null) return null;
+      final res = await dio.get("${MyConstants.baseUrl}api/auth/me?token=$token");
+      if (MyHelpers.isResOk(res.statusCode!)) {
+        return UserModel.fromJson(res.data['user']);
+      }
+      return null;
+    } catch(ex) {
+      print(ex);
+      return null;
     }
   }
 
