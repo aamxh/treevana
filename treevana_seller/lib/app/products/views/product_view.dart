@@ -90,7 +90,7 @@ class ProductView extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(height: size.height * 0.08),
+            SizedBox(height: size.height * 0.04),
             Center(
               child: ElevatedButton.icon(
                 style: ElevatedButton.styleFrom(
@@ -98,20 +98,41 @@ class ProductView extends StatelessWidget {
                   backgroundColor: MyConstants.primaryColor,
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  fixedSize: Size(size.width * 0.6, size.height * 0.064),
                 ),
-                onPressed: () => Get.to(() => OrderView(productName: product.title)),
-                icon: const Icon(
-                  Icons.shopping_bag_outlined,
-                  color: Colors.white,
+                icon: Icon(
+                  Icons.edit,
                   size: 30,
                 ),
+                onPressed: () => Get.to(() => OrderView(productName: product.title)),
                 label: Text(
-                  'Request Order',
+                  'Edit Order',
                   style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
                 ),
               ),
             ),
-          ],
+            SizedBox(height: size.height * 0.02,),
+            Center(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  elevation: 0,
+                  backgroundColor: theme.scaffoldBackgroundColor,
+                  foregroundColor: theme.colorScheme.secondary,
+                  fixedSize: Size(size.width * 0.6, size.height * 0.064),
+                  side: BorderSide(color: MyConstants.errorColor, width: 2),
+                ),
+                icon: Icon(
+                  Icons.delete_outline,
+                  size: 30,
+                  color: MyConstants.errorColor,
+                ),
+                onPressed: () => Get.to(() => OrderView(productName: product.title)),
+                label: Text(
+                  'Delete Order',
+                  style: theme.textTheme.titleMedium?.copyWith(color: MyConstants.errorColor),
+                ),
+              ),
+            ),          ],
         ),
       ),
     );

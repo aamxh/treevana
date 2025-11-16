@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_seller/app/orders/views/orders_view.dart';
 import 'package:treevana_seller/app/products/controllers/products_controller.dart';
+import 'package:treevana_seller/app/products/views/add_product_view.dart';
 import 'package:treevana_seller/app/products/views/product_view.dart';
 import 'package:treevana_seller/app/products/views/products_view.dart';
 import 'package:treevana_seller/app/settings/views/settings_view.dart';
@@ -48,35 +49,45 @@ class HomeView extends GetView<HomeController> {
           ),
         ],
       ),
-      body: ctrl.products.isEmpty ?
+      body: MyConstants.products.isEmpty ?
         Center(
             child: Text('No products available right now 🌱'),
           ) :
         ListView(
-          padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
-          children: [
-            SizedBox(height: size.height * 0.02),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Featured Products',
-                  style: theme.textTheme.titleMedium,
-                ),
-                TextButton(
-                  onPressed: () => Get.to(() => ProductsView()),
-                  child: Text(
-                    'View All',
-                    style: theme.textTheme.bodyLarge!.copyWith(
-                      color: MyConstants.primaryColor
+            padding: EdgeInsets.symmetric(horizontal: size.width * 0.05),
+            children: [
+              SizedBox(height: size.height * 0.02),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'My Products',
+                    style: theme.textTheme.titleMedium,
+                  ),
+                  TextButton(
+                    onPressed: () => Get.to(() => ProductsView()),
+                    child: Text(
+                      'View All',
+                      style: theme.textTheme.bodyLarge!.copyWith(
+                        color: MyConstants.primaryColor
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            ...ctrl.products.map((product) => _ProductCard(product: product)),
-          ],
+                ],
+              ),
+              ...MyConstants.products.map((product) => _ProductCard(product: product)),
+            ],
+          ),
+      floatingActionButton: IconButton(
+        icon: Icon(
+          Icons.add,
+          size: 30,
         ),
+        style: IconButton.styleFrom(
+
+        ),
+        onPressed: () => Get.to(() => AddProductView()),
+      ),
     );
   }
 }

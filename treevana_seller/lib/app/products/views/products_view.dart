@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_seller/app/products/models/product_model.dart';
 import 'package:treevana_seller/core/constants.dart';
 import '../controllers/products_controller.dart';
 import '../../products/views/product_view.dart';
@@ -16,7 +15,7 @@ class ProductsView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('All Products', style: theme.textTheme.titleLarge?.copyWith(color: Colors.white)),
+        title: Text('My Products', style: theme.textTheme.titleLarge?.copyWith(color: Colors.white)),
       ),
       body:
         //final products = controller.products;

@@ -45,6 +45,14 @@ class MyConstants {
     ),
   ];
 
+  static final seller = SellerModel(
+    id: 's1',
+    name: 'Leafy Loft',
+    email: 'sales@leafyloft.com',
+    phoneNumber: '+44 7700 900321',
+    picture: '',
+  );
+
   static final products = <ProductModel>[
     ProductModel(
       id: 'p1',
@@ -54,13 +62,7 @@ class MyConstants {
       price: 14.99,
       picture:
       'assets/oak_sapling.jpeg',
-      seller: SellerModel(
-        id: 's1',
-        name: 'GreenLife Nursery',
-        email: 'greenlife@example.com',
-        phoneNumber: '0655173633',
-        picture: '',
-      ),
+      seller: seller,
     ),
     ProductModel(
       id: 'p2',
@@ -70,13 +72,7 @@ class MyConstants {
       price: 19.50,
       picture:
       'assets/maple_sapling.jpg',
-      seller: SellerModel(
-        id: 's1',
-        name: 'GreenLife Nursery',
-        email: 'greenlife@example.com',
-        phoneNumber: '0655173633',
-        picture: '',
-      ),
+      seller: seller,
     ),
     ProductModel(
       id: 'p3',
@@ -85,13 +81,7 @@ class MyConstants {
       quantity: 15,
       price: 39.00,
       picture: 'assets/fiddle_leaf_fig.jpg',
-      seller: SellerModel(
-        id: 's3',
-        name: 'Leafy Loft',
-        email: 'sales@leafyloft.com',
-        phoneNumber: '+44 7700 900321',
-        picture: '',
-      ),
+      seller: seller,
     ),
     ProductModel(
       id: 'p1',
@@ -101,13 +91,7 @@ class MyConstants {
       price: 14.99,
       picture:
       'assets/oak_sapling.jpeg',
-      seller: SellerModel(
-        id: 's1',
-        name: 'GreenLife Nursery',
-        email: 'greenlife@example.com',
-        phoneNumber: '0655173633',
-        picture: '',
-      ),
+      seller: seller,
     ),
   ];
 
