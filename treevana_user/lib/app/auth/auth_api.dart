@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/models/user_model.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:treevana_user/core/helpers.dart';
@@ -13,8 +15,7 @@ class AuthApi {
 
   static Future<bool> isUserAuthenticated() async {
     if (await isTokenValid()) return true;
-    return false;
-    //return await tryRefreshToken();
+    return await tryRefreshToken();
   }
 
   static Future<bool> isTokenValid() async {
@@ -28,60 +29,6 @@ class AuthApi {
       return DateTime.now().isBefore(expiryDate.subtract(const Duration(minutes: 1)));
     } on Exception catch (e) {
       print(e);
-      return false;
-    }
-  }
-
-  static Future<bool> signIn({
-    required String email,
-    required String password,
-  }) async {
-    try {
-      final json = jsonEncode({"email": email, "password": password});
-      final res = await dio.post("${MyConstants.baseUrl}api/auth/login", data: json);
-      if (MyHelpers.isResOk(res.statusCode!)) {
-        await saveAccessToken(
-          res.data['token'],
-          DateTime.now().add(const Duration(days: 30)),
-        );
-        return true;
-      }
-      return false;
-    } catch(ex) {
-      MyHelpers.showError(ex.toString());
-      return false;
-    }
-  }
-
-  static Future<bool> signUp(UserModel user) async {
-    try {
-      final json = jsonEncode(user.toJson()..addAll({"role": "user"}));
-      final res = await dio.post("${MyConstants.baseUrl}api/auth/register", data: json);
-      if (MyHelpers.isResOk(res.statusCode!)) {
-        await saveAccessToken(
-          res.data['token'],
-          DateTime.now().add(const Duration(days: 30)),
-        );
-        return true;
-      }
-      return false;
-    } catch(ex) {
-      MyHelpers.showError(ex.toString());
-      return false;
-    }
-  }
-
-  static Future<bool> signOut() async {
-    try {
-      final response = await dio.post("${MyConstants.baseUrl}api/auth/logout");
-      bool result = MyHelpers.isResOk(response.statusCode!);
-      final refs = await SharedPreferences.getInstance();
-      result = result & await refs.remove('access_token');
-      result = result & await refs.remove('refresh_token');
-      result = result & await refs.remove('token_expiry');
-      return result;
-    } catch (ex) {
-      print(ex);
       return false;
     }
   }
@@ -118,6 +65,61 @@ class AuthApi {
   static Future<String?> getAccessToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('access_token');
+  }
+
+  static Future<bool> signIn({
+    required String email,
+    required String password,
+  }) async {
+    final json = jsonEncode({"email": email, "password": password});
+    try {
+      final res = await dio.post("${MyConstants.baseUrl}api/auth/login", data: json);
+      if (MyHelpers.isResOk(res.statusCode!)) {
+        await saveAccessToken(
+          res.data['token'],
+          DateTime.now().add(const Duration(days: 30)),
+        );
+        return true;
+      }
+      return false;
+    } catch(ex) {
+      MyHelpers.showError(ex.toString());
+      return false;
+    }
+  }
+
+  static Future<bool> signUp() async {
+    final user = Get.find<UserController>().user.value;
+    final json = jsonEncode(user.toJson()..addAll({"role": "user"}));
+    try {
+      final res = await dio.post("${MyConstants.baseUrl}api/auth/register", data: json);
+      if (MyHelpers.isResOk(res.statusCode!)) {
+        await saveAccessToken(
+          res.data['token'],
+          DateTime.now().add(const Duration(days: 30)),
+        );
+        return true;
+      }
+      return false;
+    } catch(ex) {
+      MyHelpers.showError(ex.toString());
+      return false;
+    }
+  }
+
+  static Future<bool> signOut() async {
+    try {
+      final response = await dio.post("${MyConstants.baseUrl}api/auth/logout");
+      bool result = MyHelpers.isResOk(response.statusCode!);
+      final refs = await SharedPreferences.getInstance();
+      result = result & await refs.remove('access_token');
+      result = result & await refs.remove('refresh_token');
+      result = result & await refs.remove('token_expiry');
+      return result;
+    } catch (ex) {
+      print(ex);
+      return false;
+    }
   }
 
   static Future<void> initializeProfile(String token) async {

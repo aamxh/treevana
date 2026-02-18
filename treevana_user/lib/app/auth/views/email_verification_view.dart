@@ -1,10 +1,12 @@
 import 'package:treevana_user/app/auth/auth_api.dart';
 import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:treevana_user/core/helpers.dart';
 import '../../home/views/home_view.dart';
 
 class EmailVerificationView extends StatelessWidget {
@@ -92,25 +94,16 @@ class EmailVerificationView extends StatelessWidget {
                     );
                     final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
                     if (res) {
-                      //final res = await AuthApi.signUp();
+                      final res = await AuthApi.signUp();
                       Get.back();
                       if (res) {
                         Get.offAll(() => HomeView());
+                      } else {
+                        MyHelpers.showError('Error signing-up!');
                       }
                     } else {
-                      Get.showSnackbar(GetSnackBar(
-                        messageText: Text(
-                          'Either the code validity has expired or you\'ve '
-                          'entered a code that does not match with the one we sent!',
-                          style: theme.textTheme.titleSmall!.copyWith(
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        duration: Duration(seconds: 5),
-                        backgroundColor: MyConstants.primaryColor,
-                        borderRadius: 10,
-                      ));
+                      MyHelpers.showError('Either the code validity has expired or you\'ve '
+                          'entered a code that does not match with the one we sent!');
                     }
                   }
                 },

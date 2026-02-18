@@ -1,7 +1,8 @@
+import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
 import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/models/user_model.dart';
+import 'package:treevana_user/app/auth/views/email_verification_view.dart';
 import 'package:treevana_user/app/auth/views/sign_in_view.dart';
-import 'package:treevana_user/app/home/views/home_view.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -210,14 +211,6 @@ class SignUpView extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      //Get.put(EmailVerificationController());
-                      //Get.to(() => EmailVerificationView());
-                      Get.dialog(
-                        Center(child: CircularProgressIndicator(
-                          color: MyConstants.primaryColor,
-                        ),),
-                        barrierDismissible: false,
-                      );
                       final user = UserModel(
                         name: _nameCtrl.text.trim(),
                         email: _emailCtrl.text.trim(),
@@ -226,12 +219,11 @@ class SignUpView extends StatelessWidget {
                         id: '',
                         password: _password1Ctrl.text.trim(),
                       );
-                      final res = await AuthApi.signUp(user);
-                      if (res) {
-                        Get.put(UserController());
-                        Get.back();
-                        Get.to(() => HomeView());
-                      }
+                      Get.put(UserController());
+                      final ctrl = Get.find<UserController>();
+                      ctrl.user.value = user;
+                      Get.put(EmailVerificationController());
+                      Get.to(() => EmailVerificationView());
                     }
                   },
                   style: ElevatedButton.styleFrom(

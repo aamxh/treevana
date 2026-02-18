@@ -1,7 +1,10 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:treevana_user/app/auth/controllers/user_controller.dart';
+import 'package:treevana_user/app/home/controllers/home_controller.dart';
+import 'package:treevana_user/app/orders/controllers/orders_controller.dart';
+import 'package:treevana_user/app/products/controllers/products_controller.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:get/get.dart';
-import 'dart:math';
 
 class MyHelpers {
 
@@ -10,7 +13,7 @@ class MyHelpers {
   static void showError(String text) {
     Get.showSnackbar(GetSnackBar(
       message: text,
-      title: 'An error occured!',
+      title: 'An error occurred!',
       backgroundColor: MyConstants.errorColor,
       isDismissible: false,
       duration: Duration(seconds: 4),
@@ -38,6 +41,12 @@ class MyHelpers {
     if (pass1.length < 6) return "Password must be at least 6 characters long!";
     if (pass1 != pass2) return "The two passwords are different!";
     return null;
+  }
+
+  static initializeControllers() {
+    Get.put(OrdersController());
+    Get.put(ProductsController());
+    Get.put(UserController());
   }
 
 }

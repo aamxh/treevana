@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_seller/app/products/controllers/add_product_controller.dart';
+import 'package:treevana_seller/core/constants.dart';
 
 class AddProductView extends StatelessWidget {
+
   AddProductView({super.key});
 
   final controller = Get.put(AddProductController());
@@ -11,7 +13,6 @@ class AddProductView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -23,115 +24,138 @@ class AddProductView extends StatelessWidget {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: size.width * 0.05,
-          vertical: size.height * 0.02,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _titleField(theme),
-            _descriptionField(theme, size),
-            _quantityField(theme),
-            _priceField(theme),
-            _pictureField(theme),
-            _sellerField(theme),
-            SizedBox(height: size.height * 0.03),
-            _submitButton(theme, size),
-          ],
+        padding: EdgeInsets.all(size.width * 0.1),
+        child: Form(
+          key: controller.formKey,
+          child: Column(
+            children: [
+              SizedBox(height: size.height * 0.03,),
+              _titleField(theme, size),
+              SizedBox(height: size.height * 0.03,),
+              _descriptionField(theme, size),
+              SizedBox(height: size.height * 0.03,),
+              _quantityField(theme, size),
+              SizedBox(height: size.height * 0.03,),
+              _priceField(theme, size),
+              //SizedBox(height: size.height * 0.03),
+              //_avatarField(theme, size),
+              SizedBox(height: size.height * 0.06),
+              _submitButton(theme, size),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _titleField(ThemeData theme) {
-    return TextField(
-      controller: controller.title,
-      decoration: InputDecoration(
-        labelText: "Title",
-        labelStyle: theme.textTheme.bodyLarge,
-        border: const OutlineInputBorder(),
-      ),
+  Widget _titleField(ThemeData theme, Size size) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Title',
+          style: theme.textTheme.titleSmall,
+        ),
+        SizedBox(height: size.height * 0.01,),
+        TextFormField(
+          controller: controller.title,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          validator: (val) => val!.isEmpty ? "Title field cannot be empty!" : null,
+        ),
+      ],
     );
   }
 
   Widget _descriptionField(ThemeData theme, Size size) {
-    return Padding(
-      padding: EdgeInsets.only(top: size.height * 0.02),
-      child: TextField(
-        controller: controller.description,
-        maxLines: 4,
-        decoration: InputDecoration(
-          labelText: "Description",
-          labelStyle: theme.textTheme.bodyLarge,
-          border: const OutlineInputBorder(),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Description (optional)',
+          style: theme.textTheme.titleSmall,
         ),
-      ),
+        SizedBox(height: size.height * 0.01,),
+        TextField(
+          controller: controller.description,
+          maxLines: 4,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
-  Widget _quantityField(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: TextField(
-        controller: controller.quantity,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          labelText: "Quantity",
-          labelStyle: theme.textTheme.bodyLarge,
-          border: const OutlineInputBorder(),
+  Widget _quantityField(ThemeData theme, Size size) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Quantity',
+          style: theme.textTheme.titleSmall,
         ),
-      ),
+        SizedBox(height: size.height * 0.01,),
+        TextFormField(
+          controller: controller.quantity,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          validator: (val) => val!.isEmpty ? "Quantity field cannot be empty!" : null,
+        ),
+      ],
     );
   }
 
-  Widget _priceField(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: TextField(
-        controller: controller.price,
-        keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          labelText: "Price (DA)",
-          labelStyle: theme.textTheme.bodyLarge,
-          border: const OutlineInputBorder(),
+  Widget _priceField(ThemeData theme, Size size) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Price',
+          style: theme.textTheme.titleSmall,
         ),
-      ),
+        SizedBox(height: size.height * 0.01,),
+        TextFormField(
+          controller: controller.price,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+          ),
+          validator: (val) => val!.isEmpty ? "Price field cannot be empty!" : null,
+        ),
+      ],
     );
   }
 
-  Widget _pictureField(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: TextField(
-        controller: controller.picture,
-        decoration: InputDecoration(
-          labelText: "Picture URL",
-          labelStyle: theme.textTheme.bodyLarge,
-          border: const OutlineInputBorder(),
+  Widget _avatarField(ThemeData theme, Size size) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Picture (optional)',
+          style: theme.textTheme.titleSmall,
         ),
-      ),
-    );
-  }
+        SizedBox(height: size.height * 0.01,),
 
-  Widget _sellerField(ThemeData theme) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 16),
-      child: TextField(
-        controller: controller.sellerId,
-        decoration: InputDecoration(
-          labelText: "Seller ID",
-          labelStyle: theme.textTheme.bodyLarge,
-          border: const OutlineInputBorder(),
-        ),
-      ),
+      ],
     );
   }
 
   Widget _submitButton(ThemeData theme, Size size) {
     return SizedBox(
-      width: double.infinity,
-      height: size.height * 0.06,
+      width: size.width * 0.5,
+      height: size.height * 0.064,
       child: ElevatedButton(
         onPressed: controller.addProduct,
         child: Text(

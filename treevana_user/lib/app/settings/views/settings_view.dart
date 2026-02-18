@@ -20,7 +20,7 @@ class SettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Obx(() => DrawerHeader(
+            DrawerHeader(
                 decoration: BoxDecoration(
                   color: theme.primaryColor,
                 ),
@@ -29,27 +29,26 @@ class SettingsView extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: size.width * 0.08,
-                      backgroundImage: const NetworkImage(
-                        'https://cdn-icons-png.flaticon.com/512/3135/3135715.png',
+                      backgroundImage: const AssetImage(
+                        'assets/profile.png',
                       ),
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      userCtrl.user.value.name,
+                      "Islam Fratsa",
                       style: theme.textTheme.titleLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      userCtrl.user.value.email,
+                     "islam_fratsa@gmail.com",
                       style: theme.textTheme.bodyMedium!.copyWith(
                         color: Colors.white70,
                       ),
                     ),
                   ],
                 ),
-              ),
             ),
             ListTile(
               leading: const Icon(Icons.person_outline),

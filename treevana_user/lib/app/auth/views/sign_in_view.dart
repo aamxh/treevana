@@ -131,10 +131,11 @@ class SignInView extends StatelessWidget {
                         email: _emailCtrl.text.trim(),
                         password: _passwordCtrl.text.trim(),
                       );
+                      Get.back();
                       if (res) {
-                        Get.put(UserController());
-                        Get.back();
                         Get.to(() => HomeView());
+                      } else {
+                        MyHelpers.showError("Error signing-in!");
                       }
                     }
                   },

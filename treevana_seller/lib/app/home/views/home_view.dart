@@ -78,15 +78,21 @@ class HomeView extends GetView<HomeController> {
               ...MyConstants.products.map((product) => _ProductCard(product: product)),
             ],
           ),
-      floatingActionButton: IconButton(
-        icon: Icon(
-          Icons.add,
-          size: 30,
+      floatingActionButton: GestureDetector(
+        onTap: () => Get.to(() => AddProductView()),
+        child: Container(
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50),
+            color: MyConstants.primaryColor,
+          ),
+          child: Icon(
+            Icons.add,
+            size: 30,
+            color: Colors.white,
+          ),
         ),
-        style: IconButton.styleFrom(
-
-        ),
-        onPressed: () => Get.to(() => AddProductView()),
       ),
     );
   }

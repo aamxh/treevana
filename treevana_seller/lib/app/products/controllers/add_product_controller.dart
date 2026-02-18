@@ -12,23 +12,28 @@ class AddProductController extends GetxController {
   final price = TextEditingController();
   final picture = TextEditingController();
   final sellerId = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
   Future<void> addProduct() async {
-    try {
-      final model = ProductModel(
-        id: "",
-        title: title.text,
-        description: description.text,
-        quantity: int.tryParse(quantity.text) ?? 0,
-        price: double.tryParse(price.text) ?? 0,
-        picture: picture.text,
-        seller: MyConstants.seller,
-      );
-      await ProductsApi.addProduct(model);
-      Get.snackbar("Success", "Product added successfully!");
-      Get.back();
-    } catch (e) {
-      Get.snackbar("Error", e.toString());
+    if (formKey.currentState!.validate()) {
+      try {
+        final model = ProductModel(
+          id: "",
+          title: title.text.trim(),
+          description: description.text.trim(),
+          quantity: int.tryParse(quantity.text.trim()) ?? 0,
+          price: double.tryParse(price.text.trim()) ?? 0,
+          picture: picture.text.trim(),
+          seller: MyConstants.seller,
+        );
+        final res = await ProductsApi.addProduct(model);
+        if (res) {
+          Get.snackbar("Success", "Product added successfully!");
+          Get.back();
+        }
+      } catch (e) {
+        Get.snackbar("Error", e.toString());
+      }
     }
   }
 

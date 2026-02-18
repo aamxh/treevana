@@ -22,14 +22,15 @@ class ProductsApi {
     }
   }
 
-  static Future<void> addProduct(ProductModel product) async {
+  static Future<bool> addProduct(ProductModel product) async {
     try {
-      final res = await dio.post("${MyConstants.baseUrl}api/products/create");
-      if (MyHelpers.isResOk(res.statusCode!)) {
-
-      }
+      final json = jsonEncode(product.toJson());
+      final res = await dio.post("${MyConstants.baseUrl}api/products/create", data: json);
+      if (MyHelpers.isResOk(res.statusCode!)) return true;
+      return false;
     } catch(ex) {
       print(ex);
+      return false;
     }
   }
 
