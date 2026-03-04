@@ -1,8 +1,9 @@
 import 'package:treevana_seller/app/auth/auth_api.dart';
-import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
 import 'package:treevana_seller/app/auth/views/reset_password_view.dart';
 import 'package:treevana_seller/app/auth/views/google_sign_in_view.dart';
 import 'package:treevana_seller/app/auth/views/sign_up_view.dart';
+import 'package:treevana_seller/app/home/controllers/home_controller.dart';
 import 'package:treevana_seller/app/home/views/home_view.dart';
 import 'package:treevana_seller/core/constants.dart';
 import 'package:email_validator/email_validator.dart';
@@ -82,7 +83,6 @@ class SignInView extends StatelessWidget {
               SizedBox(height: size.height * 0.01),
               TextFormField(
                 obscureText: true,
-                //cursorColor: MyConstants.primaryC,
                 style: theme.textTheme.bodyLarge,
                 controller: _passwordCtrl,
                 validator: (val) => MyHelpers.validatePassword(val!, val),
@@ -122,19 +122,27 @@ class SignInView extends StatelessWidget {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       Get.dialog(
-                        Center(child: CircularProgressIndicator(
-                          color: MyConstants.primaryColor,
-                        ),),
+                        Center(
+                          child: CircularProgressIndicator(
+                            color: MyConstants.primaryColor,
+                          ),
+                        ),
                         barrierDismissible: false,
                       );
-                      final res = await AuthApi.signIn(
-                        email: _emailCtrl.text.trim(),
-                        password: _passwordCtrl.text.trim(),
-                      );
-                      if (res) {
-                        Get.put(UserController());
-                        Get.back();
-                        Get.to(() => HomeView());
+                      try {
+                        final res = await AuthApi.signIn(
+                          email: _emailCtrl.text.trim(),
+                          password: _passwordCtrl.text.trim(),
+                        );
+                        if (Get.isDialogOpen ?? false) Get.back();
+                        if (res) {
+                          Get.off(() => HomeView()); // Use Get.off to replace login screen
+                        } else {
+                          MyHelpers.showError("Error signing-in!");
+                        }
+                      } catch (e) {
+                        if (Get.isDialogOpen ?? false) Get.back();
+                        MyHelpers.showError("An unexpected error occurred!");
                       }
                     }
                   },

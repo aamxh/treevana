@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
+import 'package:treevana_seller/app/home/views/home_view.dart';
+import 'package:treevana_seller/app/products/controllers/add_product_controller.dart';
+import 'package:treevana_seller/app/products/controllers/product_controller.dart';
+import 'package:treevana_seller/app/products/controllers/products_controller.dart';
 import 'package:treevana_seller/app/products/models/product_model.dart';
 import 'package:treevana_seller/app/orders/views/order_view.dart';
 import 'package:treevana_seller/core/constants.dart';
 import '../../orders/controllers/orders_controller.dart';
-import 'package:treevana_seller/app/auth/models/user_model.dart';
+import 'package:treevana_seller/app/common/models/user_model.dart';
 
 class ProductView extends StatelessWidget {
 
-  final ProductModel product;
-  const ProductView({super.key, required this.product});
+  const ProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    final ordersController = Get.find<OrdersController>();
-    final user = UserModel(
-      id: 'u0',
-      name: 'Demo User',
-      email: 'demo@treevana.com',
-      password: '',
-      phone: '+213 555 123 456',
-      avatar: 'https://cdn-icons-png.flaticon.com/512/219/219970.png',
-    );
+    final productCtrl = Get.find<ProductController>();
+    final userCtrl = Get.find<UserController>();
     return Scaffold(
       appBar: AppBar(
         title: Text('Product Details', style: theme.textTheme.headlineSmall!.copyWith(color: Colors.white)),
@@ -37,8 +34,12 @@ class ProductView extends StatelessWidget {
             // Image
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
-              child: Image.asset(
-                product.picture,
+              child: productCtrl.product.value.picture.isEmpty ?
+              Image.network(
+                "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&fit=crop",
+              ) :
+              Image.asset(
+                productCtrl.product.value.picture,
                 width: size.width,
                 height: size.height * 0.3,
                 fit: BoxFit.cover,
@@ -46,17 +47,17 @@ class ProductView extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03),
             Text(
-              product.title,
+              productCtrl.product.value.title,
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Text(
-              product.description,
+              productCtrl.product.value.description,
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 5),
             Text(
-              '\$${product.price.toStringAsFixed(2)}',
+              '\$${productCtrl.product.value.price.toStringAsFixed(2)}',
               style: theme.textTheme.titleMedium?.copyWith(
                 color: MyConstants.primaryColor,
                 fontWeight: FontWeight.w600,
@@ -75,15 +76,15 @@ class ProductView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      product.seller.name,
+                      userCtrl.user.value.name,
                       style: theme.textTheme.bodyLarge,
                     ),
                     Text(
-                      "Email: ${product.seller.email}",
+                      "Email: ${userCtrl.user.value.email}",
                       style: theme.textTheme.bodyMedium,
                     ),
                     Text(
-                      "Phone: ${product.seller.phoneNumber}",
+                      "Phone: ${userCtrl.user.value.phone}",
                       style: theme.textTheme.bodyMedium,
                     ),
                   ],
@@ -104,9 +105,9 @@ class ProductView extends StatelessWidget {
                   Icons.edit,
                   size: 30,
                 ),
-                onPressed: () => Get.to(() => OrderView(productName: product.title)),
+                onPressed: () {},
                 label: Text(
-                  'Edit Order',
+                  'Edit Product',
                   style: theme.textTheme.titleMedium?.copyWith(color: Colors.white),
                 ),
               ),
@@ -126,9 +127,44 @@ class ProductView extends StatelessWidget {
                   size: 30,
                   color: MyConstants.errorColor,
                 ),
-                onPressed: () => Get.to(() => OrderView(productName: product.title)),
+                onPressed: () => Get.dialog(
+                  AlertDialog(
+                    title: Text(
+                      'Delete Product',
+                      style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                    ),
+                    content: Text(
+                      'Are you sure you want to delete "${productCtrl.product.value.title}"? This action cannot be undone.',
+                      style: theme.textTheme.bodyMedium,
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Get.back(),
+                        child: Text(
+                          'Cancel',
+                          style: TextStyle(color: theme.colorScheme.secondary),
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: MyConstants.errorColor,
+                          foregroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        ),
+                        onPressed: () {
+                          final productsCtrl = Get.find<ProductsController>();
+                          productsCtrl.products.removeWhere(
+                                (p) => p.id == productCtrl.product.value.id,
+                          );
+                          Get.to(() => HomeView());
+                        },
+                        child: const Text('Delete'),
+                      ),
+                    ],
+                  ),
+                  ),
                 label: Text(
-                  'Delete Order',
+                  'Delete Product',
                   style: theme.textTheme.titleMedium?.copyWith(color: MyConstants.errorColor),
                 ),
               ),

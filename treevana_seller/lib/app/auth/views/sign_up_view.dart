@@ -1,5 +1,9 @@
-import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
-import 'package:treevana_seller/app/auth/models/user_model.dart';
+import 'package:email_otp/email_otp.dart';
+import 'package:treevana_seller/app/auth/controllers/email_verification_controller.dart';
+import 'package:treevana_seller/app/auth/controllers/sign_up_controller.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
+import 'package:treevana_seller/app/common/models/user_model.dart';
+import 'package:treevana_seller/app/auth/views/email_verification_view.dart';
 import 'package:treevana_seller/app/auth/views/sign_in_view.dart';
 import 'package:treevana_seller/app/home/views/home_view.dart';
 import 'package:treevana_seller/core/constants.dart';
@@ -210,27 +214,27 @@ class SignUpView extends StatelessWidget {
                 child: ElevatedButton(
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
-                      //Get.put(EmailVerificationController());
-                      //Get.to(() => EmailVerificationView());
                       Get.dialog(
-                        Center(child: CircularProgressIndicator(
-                          color: MyConstants.primaryColor,
-                        ),),
+                        Center(
+                          child: CircularProgressIndicator(
+                            color: MyConstants.primaryColor,
+                          ),),
                         barrierDismissible: false,
                       );
-                      final user = UserModel(
-                        name: _nameCtrl.text.trim(),
-                        email: _emailCtrl.text.trim(),
-                        phone: _phoneCtrl.text.trim(),
-                        avatar: '',
-                        id: '',
-                        password: _password1Ctrl.text.trim(),
-                      );
-                      final res = await AuthApi.signUp(user);
-                      if (res) {
-                        Get.put(UserController());
-                        Get.back();
-                        Get.to(() => HomeView());
+                      //final res = await EmailOTP.sendOTP(email: _emailCtrl.text.trim());
+                      Get.back();
+                      if (true) {
+                        final user = UserModel(
+                          name: _nameCtrl.text.trim(),
+                          email: _emailCtrl.text.trim(),
+                          password: _password1Ctrl.text.trim(),
+                          phone: _phoneCtrl.text.trim(),
+                        );
+                        Get.find<SignUpController>().user.value = user;
+                        Get.put(EmailVerificationController());
+                        Get.to(() => EmailVerificationView());
+                      } else {
+                        MyHelpers.showError('Error sending verification email!');
                       }
                     }
                   },
@@ -265,6 +269,7 @@ class SignUpView extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: size.height * 0.1),
             ],
           ),
         ),

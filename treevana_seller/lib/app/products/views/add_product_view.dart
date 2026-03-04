@@ -58,13 +58,25 @@ class AddProductView extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.01,),
         TextFormField(
+          style: theme.textTheme.bodyLarge,
           controller: controller.title,
+          validator: (val) => val!.isEmpty ? "Title field cannot be empty!" : null,
           decoration: InputDecoration(
+            hintText: 'Ex: Oak sapling',
+            hintStyle: theme.textTheme.bodyLarge!.copyWith(
+              color: MyConstants.grey,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(
+                color: MyConstants.primaryColor,
+                width: 2,
+              ),
+            ),
           ),
-          validator: (val) => val!.isEmpty ? "Title field cannot be empty!" : null,
         ),
       ],
     );
@@ -79,12 +91,23 @@ class AddProductView extends StatelessWidget {
           style: theme.textTheme.titleSmall,
         ),
         SizedBox(height: size.height * 0.01,),
-        TextField(
+        TextFormField(
+          style: theme.textTheme.bodyLarge,
           controller: controller.description,
-          maxLines: 4,
           decoration: InputDecoration(
+            hintText: 'Some description can go here..',
+            hintStyle: theme.textTheme.bodyLarge!.copyWith(
+              color: MyConstants.grey,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(
+                color: MyConstants.primaryColor,
+                width: 2,
+              ),
             ),
           ),
         ),
@@ -102,14 +125,26 @@ class AddProductView extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.01,),
         TextFormField(
+          style: theme.textTheme.bodyLarge,
           controller: controller.quantity,
           keyboardType: TextInputType.number,
+          validator: (val) => val!.isEmpty ? "Quantity field cannot be empty!" : null,
           decoration: InputDecoration(
+            hintText: 'Ex: 2',
+            hintStyle: theme.textTheme.bodyLarge!.copyWith(
+              color: MyConstants.grey,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(
+                color: MyConstants.primaryColor,
+                width: 2,
+              ),
+            ),
           ),
-          validator: (val) => val!.isEmpty ? "Quantity field cannot be empty!" : null,
         ),
       ],
     );
@@ -125,14 +160,26 @@ class AddProductView extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.01,),
         TextFormField(
+          style: theme.textTheme.bodyLarge,
           controller: controller.price,
           keyboardType: TextInputType.number,
+          validator: (val) => val!.isEmpty ? "Price field cannot be empty!" : null,
           decoration: InputDecoration(
+            hintText: 'Ex: 20\$',
+            hintStyle: theme.textTheme.bodyLarge!.copyWith(
+              color: MyConstants.grey,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(
+                color: MyConstants.primaryColor,
+                width: 2,
+              ),
+            ),
           ),
-          validator: (val) => val!.isEmpty ? "Price field cannot be empty!" : null,
         ),
       ],
     );

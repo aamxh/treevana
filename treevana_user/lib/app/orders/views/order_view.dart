@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:treevana_user/app/orders/controllers/order_controller.dart';
+import 'package:treevana_user/app/orders/controllers/orders_controller.dart';
+import 'package:treevana_user/core/constants.dart';
+import 'package:treevana_user/core/helpers.dart';
 
 class OrderView extends StatefulWidget {
 
-  final String productName;
-
-  const OrderView({super.key, required this.productName});
+  const OrderView({super.key});
 
   @override
   State<OrderView> createState() => _OrderViewState();
@@ -14,10 +17,11 @@ class OrderView extends StatefulWidget {
 class _OrderViewState extends State<OrderView> {
 
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _phoneController = TextEditingController();
-  final _wilayaController = TextEditingController();
-  final _quantityController = TextEditingController();
+  final _nameCtrl = TextEditingController();
+  final _phoneCtrl = TextEditingController();
+  final _wilayaCtrl = TextEditingController();
+  final _quantityCtrl = TextEditingController();
+  final _orderCtrl = Get.find<OrderController>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,7 @@ class _OrderViewState extends State<OrderView> {
     final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Order ${widget.productName}',
+        title: Text('Order ${_orderCtrl.order.value.product.title}',
             style: theme.textTheme.headlineSmall!.copyWith(
               color: Colors.white,
             ),
@@ -38,39 +42,126 @@ class _OrderViewState extends State<OrderView> {
           key: _formKey,
           child: ListView(
             children: [
-              Text('Fill your order details',
-                  style: theme.textTheme.titleMedium),
-              const SizedBox(height: 16),
-              TextFormField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Full Name'),
-                validator: (value) =>
-                value!.isEmpty ? 'Please enter your name' : null,
+              SizedBox(height: size.height * 0.05),
+              Center(
+                child: Text(
+                  'Fill your order details',
+                    style: theme.textTheme.titleLarge,
+                ),
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: size.height * 0.1),
+              Text(
+                'Your full name',
+                style: theme.textTheme.bodyLarge,
+              ),
+              SizedBox(height: size.height * 0.01),
               TextFormField(
-                controller: _phoneController,
-                decoration: const InputDecoration(labelText: 'Phone Number'),
+                style: theme.textTheme.bodyLarge,
+                controller: _nameCtrl,
+                validator: (val) => val!.isEmpty ? "Enter your full name!" : null,
+                decoration: InputDecoration(
+                  hintText: 'Ex: Mohammed Alsayed Ahmed',
+                  hintStyle: theme.textTheme.bodyLarge!.copyWith(
+                    color: MyConstants.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: MyConstants.primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: size.height * 0.01),
+              Text(
+                'Your phone',
+                style: theme.textTheme.bodyLarge,
+              ),
+              SizedBox(height: size.height * 0.01),
+              TextFormField(
+                style: theme.textTheme.bodyLarge,
+                controller: _phoneCtrl,
                 keyboardType: TextInputType.phone,
-                validator: (value) =>
-                value!.isEmpty ? 'Please enter your phone number' : null,
+                validator: (val) => MyHelpers.validatePhone(val!),
+                decoration: InputDecoration(
+                  hintText: 'Ex: 0655163532',
+                  hintStyle: theme.textTheme.bodyLarge!.copyWith(
+                    color: MyConstants.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: MyConstants.primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _wilayaController,
-                decoration: const InputDecoration(labelText: 'Wilaya'),
-                validator: (value) =>
-                value!.isEmpty ? 'Please enter your wilaya' : null,
+              SizedBox(height: size.height * 0.01),
+              Text(
+                'Your Wilaya',
+                style: theme.textTheme.bodyLarge,
               ),
-              const SizedBox(height: 10),
+              SizedBox(height: size.height * 0.01),
               TextFormField(
-                controller: _quantityController,
-                decoration: const InputDecoration(labelText: 'Quantity'),
+                style: theme.textTheme.bodyLarge,
+                controller: _wilayaCtrl,
+                validator: (val) => val!.isEmpty ? "Enter your wilaya!" : null,
+                decoration: InputDecoration(
+                  hintText: 'Ex: Algiers',
+                  hintStyle: theme.textTheme.bodyLarge!.copyWith(
+                    color: MyConstants.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: MyConstants.primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: size.height * 0.01),
+              Text(
+                'Quantity',
+                style: theme.textTheme.bodyLarge,
+              ),
+              SizedBox(height: size.height * 0.01),
+              TextFormField(
+                style: theme.textTheme.bodyLarge,
                 keyboardType: TextInputType.number,
-                validator: (value) =>
-                value!.isEmpty ? 'Please enter quantity' : null,
+                controller: _quantityCtrl,
+                validator: (val) => val!.isEmpty || int.parse(val) < 1
+                    ? "Quantity must be a positive number"
+                    : null,
+                decoration: InputDecoration(
+                  hintText: 'Ex: 2',
+                  hintStyle: theme.textTheme.bodyLarge!.copyWith(
+                    color: MyConstants.grey,
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide(
+                      color: MyConstants.primaryColor,
+                      width: 2,
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(height: size.height * 0.2),
+              SizedBox(height: size.height * 0.1),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
@@ -80,11 +171,13 @@ class _OrderViewState extends State<OrderView> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      // TODO: Add logic to create order and save to backend or local list
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Order placed successfully!')),
+                      _orderCtrl.order.value = _orderCtrl.copyWith(
+                        phone: _phoneCtrl.text.trim(),
+                        wilaya: _wilayaCtrl.text.trim(),
+                        quantity: int.parse(_quantityCtrl.text.trim()),
                       );
-                      Navigator.pop(context);
+                      Get.find<OrdersController>().addOrder(_orderCtrl.order.value);
+                      MyHelpers.showSuccess("Your order was placed successfully!");
                     }
                   },
                   child: Text('Submit Order',

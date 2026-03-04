@@ -1,6 +1,7 @@
-import 'dart:convert';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:treevana_seller/app/auth/models/user_model.dart';
+import 'package:treevana_seller/app/auth/controllers/sign_up_controller.dart';
+import 'package:treevana_seller/app/common/models/user_model.dart';
 import 'package:treevana_seller/core/constants.dart';
 import 'package:treevana_seller/core/helpers.dart';
 import 'package:dio/dio.dart';
@@ -12,9 +13,8 @@ class AuthApi {
   static final dio = Dio();
 
   static Future<bool> isUserAuthenticated() async {
-    //if (await isTokenValid()) return true;
-    return true;
-    //return await tryRefreshToken();
+    if (!await isTokenValid()) return false;
+    return (await getProfile()) != null;
   }
 
   static Future<bool> isTokenValid() async {
@@ -32,13 +32,33 @@ class AuthApi {
     }
   }
 
+  static Future<void> saveAccessToken(
+      String accessToken,
+      DateTime expiryDate,
+      ) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('access_token', accessToken);
+    await prefs.setString('token_expiry', expiryDate.toIso8601String());
+  }
+
+  static Future<bool> tryRefreshToken() async {
+    return false;
+  }
+
+  static Future<String?> getAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('access_token');
+  }
+
   static Future<bool> signIn({
     required String email,
     required String password,
   }) async {
     try {
-      final json = jsonEncode({"email": email, "password": password});
-      final res = await dio.post("${MyConstants.baseUrl}api/auth/login", data: json);
+      final res = await dio.post(
+        "${MyConstants.baseUrl}api/auth/login",
+        data: {"email": email, "password": password},
+      );
       if (MyHelpers.isResOk(res.statusCode!)) {
         await saveAccessToken(
           res.data['token'],
@@ -53,10 +73,19 @@ class AuthApi {
     }
   }
 
-  static Future<bool> signUp(UserModel user) async {
+  static Future<bool> signUp() async {
+    final user = Get.find<SignUpController>().user.value;
     try {
-      final json = jsonEncode(user.toJson()..addAll({"role": "user"}));
-      final res = await dio.post("${MyConstants.baseUrl}api/auth/register", data: json);
+      final res = await dio.post(
+        "${MyConstants.baseUrl}api/auth/register",
+        data: {
+          "name": user.name,
+          "email": user.email,
+          "password": user.password,
+          "phone": user.phone,
+          "role": "seller",
+        },
+      );
       if (MyHelpers.isResOk(res.statusCode!)) {
         await saveAccessToken(
           res.data['token'],
@@ -73,7 +102,13 @@ class AuthApi {
 
   static Future<bool> signOut() async {
     try {
-      final response = await dio.post("${MyConstants.baseUrl}api/auth/logout");
+      final token = await getAccessToken();
+      final response = await dio.post(
+        "${MyConstants.baseUrl}api/auth/logout",
+        options: Options(
+          headers: token == null ? null : {'Authorization': 'Bearer $token'},
+        ),
+      );
       bool result = MyHelpers.isResOk(response.statusCode!);
       final refs = await SharedPreferences.getInstance();
       result = result & await refs.remove('access_token');
@@ -84,40 +119,6 @@ class AuthApi {
       print(ex);
       return false;
     }
-  }
-
-  static Future<void> saveAccessToken(
-      String accessToken,
-      DateTime expiryDate,
-      ) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('access_token', accessToken);
-    await prefs.setString('token_expiry', expiryDate.toIso8601String());
-  }
-
-  static Future<bool> tryRefreshToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final refreshToken = prefs.getString('refresh_token');
-    if (refreshToken == null) return false;
-    try {
-      final response = await dio.post(
-        "${MyConstants.baseUrl}api/auth/token/refresh/",
-        data: {'token': refreshToken},
-      );
-      final newAccessToken = response.data['access_token'];
-      final newExpiry = DateTime.now().add(const Duration(days: 7));
-      await prefs.setString('access_token', newAccessToken);
-      await prefs.setString('token_expiry', newExpiry.toIso8601String());
-      return true;
-    } on Exception catch (ex) {
-      print(ex);
-      return false;
-    }
-  }
-
-  static Future<String?> getAccessToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString('access_token');
   }
 
   static Future<void> initializeProfile(String token) async {
@@ -132,7 +133,10 @@ class AuthApi {
     try {
       final token = await getAccessToken();
       if (token == null) return null;
-      final res = await dio.get("${MyConstants.baseUrl}api/auth/me?token=$token");
+      final res = await dio.get(
+        "${MyConstants.baseUrl}api/auth/me",
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+      );
       if (MyHelpers.isResOk(res.statusCode!)) {
         return UserModel.fromJson(res.data['user']);
       }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_user/app/auth/auth_api.dart';
-import 'package:treevana_user/app/auth/controllers/user_controller.dart';
+import 'package:treevana_user/app/common/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/views/welcome_view.dart';
 import 'package:treevana_user/core/constants.dart';
 
@@ -20,7 +20,7 @@ class SettingsView extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DrawerHeader(
+            Obx(() => DrawerHeader(
                 decoration: BoxDecoration(
                   color: theme.primaryColor,
                 ),
@@ -35,21 +35,25 @@ class SettingsView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      "Islam Fratsa",
+                      userCtrl.user.value.name.isEmpty
+                          ? 'Treevana User'
+                          : userCtrl.user.value.name,
                       style: theme.textTheme.titleLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                     "islam_fratsa@gmail.com",
+                      userCtrl.user.value.email.isEmpty
+                          ? 'No email available'
+                          : userCtrl.user.value.email,
                       style: theme.textTheme.bodyMedium!.copyWith(
                         color: Colors.white70,
                       ),
                     ),
                   ],
                 ),
-            ),
+            )),
             ListTile(
               leading: const Icon(Icons.person_outline),
               title: Text('Profile', style: theme.textTheme.bodyLarge),

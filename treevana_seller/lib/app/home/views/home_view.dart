@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_seller/app/orders/views/orders_view.dart';
+import 'package:treevana_seller/app/products/controllers/add_product_controller.dart';
+import 'package:treevana_seller/app/products/controllers/product_controller.dart';
 import 'package:treevana_seller/app/products/controllers/products_controller.dart';
 import 'package:treevana_seller/app/products/views/add_product_view.dart';
 import 'package:treevana_seller/app/products/views/product_view.dart';
@@ -20,7 +22,8 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final theme = Theme.of(context);
-    final ctrl = Get.find<ProductsController>();
+    Get.put(HomeController());
+    final productsCtrl = Get.find<ProductsController>();
     return Scaffold(
       key: _scaffoldKey,
       drawer: const SettingsView(),
@@ -75,11 +78,14 @@ class HomeView extends GetView<HomeController> {
                   ),
                 ],
               ),
-              ...MyConstants.products.map((product) => _ProductCard(product: product)),
+              ...productsCtrl.products.map((product) => _ProductCard(product: product)),
             ],
           ),
       floatingActionButton: GestureDetector(
-        onTap: () => Get.to(() => AddProductView()),
+        onTap: () {
+          Get.find<AddProductController>().newProduct.value = true;
+          Get.to(() => AddProductView());
+        },
         child: Container(
           width: 50,
           height: 50,
@@ -109,7 +115,8 @@ class _ProductCard extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
         onTap: () {
-          Get.to(() => ProductView(product: product,));
+          Get.find<ProductController>().product.value = product;
+          Get.to(() => ProductView());
         },
         child: Card(
           shape: RoundedRectangleBorder(
@@ -123,7 +130,11 @@ class _ProductCard extends StatelessWidget {
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
-                  child: Image.asset(
+                  child: product.picture.isEmpty ?
+                  Image.network(
+                    "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&fit=crop",
+                  ) :
+                  Image.asset(
                     product.picture,
                     width: size.width * 0.25,
                     height: size.width * 0.25,

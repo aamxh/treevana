@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:treevana_seller/app/products/models/product_model.dart';
-import 'package:treevana_seller/app/products/products_api.dart';
+import 'package:treevana_seller/core/constants.dart';
 
 class ProductsController extends GetxController {
 
@@ -14,7 +14,8 @@ class ProductsController extends GetxController {
 
   Future<void> _loadProducts() async {
     try {
-      products.value = await ProductsApi.getAllProducts();
+      //products.value = await ProductsApi.getAllProducts();
+      products.value = MyConstants.products;
     } catch (ex) {
       print("Failed to load products: $ex");
     }

@@ -14,13 +14,19 @@ class OrderModel {
   final int quantity;
   final OrderStatus status;
   final DateTime date;
+  final String wilaya;
+  final String phone;
+  final String name;
 
   OrderModel({
-    required this.id,
+    this.id = '',
     required this.product,
     required this.quantity,
     required this.status,
     required this.date,
+    required this.wilaya,
+    required this.phone,
+    required this.name,
   });
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>

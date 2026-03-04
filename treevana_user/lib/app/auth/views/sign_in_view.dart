@@ -1,5 +1,5 @@
 import 'package:treevana_user/app/auth/auth_api.dart';
-import 'package:treevana_user/app/auth/controllers/user_controller.dart';
+import 'package:treevana_user/app/common/controllers/user_controller.dart';
 import 'package:treevana_user/app/auth/views/reset_password_view.dart';
 import 'package:treevana_user/app/auth/views/google_sign_in_view.dart';
 import 'package:treevana_user/app/auth/views/sign_up_view.dart';
@@ -82,7 +82,6 @@ class SignInView extends StatelessWidget {
               SizedBox(height: size.height * 0.01),
               TextFormField(
                 obscureText: true,
-                //cursorColor: MyConstants.primaryC,
                 style: theme.textTheme.bodyLarge,
                 controller: _passwordCtrl,
                 validator: (val) => MyHelpers.validatePassword(val!, val),
@@ -127,10 +126,7 @@ class SignInView extends StatelessWidget {
                         ),),
                         barrierDismissible: false,
                       );
-                      final res = await AuthApi.signIn(
-                        email: _emailCtrl.text.trim(),
-                        password: _passwordCtrl.text.trim(),
-                      );
+                      final res = await AuthApi.signIn(email: _emailCtrl.text.trim(), password: _passwordCtrl.text.trim(),);
                       Get.back();
                       if (res) {
                         Get.to(() => HomeView());

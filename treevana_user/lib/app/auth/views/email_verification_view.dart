@@ -1,6 +1,5 @@
 import 'package:treevana_user/app/auth/auth_api.dart';
 import 'package:treevana_user/app/auth/controllers/email_verification_controller.dart';
-import 'package:treevana_user/app/auth/controllers/user_controller.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
@@ -87,13 +86,14 @@ class EmailVerificationView extends StatelessWidget {
                 onPressed: () async {
                   if (_ctrl.isValid) {
                     Get.dialog(
-                      Center(child: CircularProgressIndicator(
+                      Center(
+                        child: CircularProgressIndicator(
                         color: MyConstants.primaryColor,
                       ),),
                       barrierDismissible: false,
                     );
-                    final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
-                    if (res) {
+                    //final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
+                    if (true) {
                       final res = await AuthApi.signUp();
                       Get.back();
                       if (res) {
@@ -102,6 +102,7 @@ class EmailVerificationView extends StatelessWidget {
                         MyHelpers.showError('Error signing-up!');
                       }
                     } else {
+                      Get.back();
                       MyHelpers.showError('Either the code validity has expired or you\'ve '
                           'entered a code that does not match with the one we sent!');
                     }

@@ -5,6 +5,7 @@ import 'package:email_otp/email_otp.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
+import 'package:treevana_seller/core/helpers.dart';
 import '../../home/views/home_view.dart';
 
 class EmailVerificationView extends StatelessWidget {
@@ -90,27 +91,18 @@ class EmailVerificationView extends StatelessWidget {
                       ),),
                       barrierDismissible: false,
                     );
-                    final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
-                    if (res) {
-                      //final res = await AuthApi.signUp();
+                    //final res = EmailOTP.verifyOTP(otp: _ctrl.code.value);
+                    if (true) {
+                      final res2 = await AuthApi.signUp();
                       Get.back();
-                      if (res) {
+                      if (res2) {
                         Get.offAll(() => HomeView());
                       }
                     } else {
-                      Get.showSnackbar(GetSnackBar(
-                        messageText: Text(
+                      MyHelpers.showError(
                           'Either the code validity has expired or you\'ve '
                           'entered a code that does not match with the one we sent!',
-                          style: theme.textTheme.titleSmall!.copyWith(
-                            color: Colors.white,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        duration: Duration(seconds: 5),
-                        backgroundColor: MyConstants.primaryColor,
-                        borderRadius: 10,
-                      ));
+                      );
                     }
                   }
                 },

@@ -1,7 +1,9 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:treevana_user/app/auth/controllers/user_controller.dart';
+import 'package:treevana_user/app/common/controllers/user_controller.dart';
 import 'package:treevana_user/app/home/controllers/home_controller.dart';
+import 'package:treevana_user/app/orders/controllers/order_controller.dart';
 import 'package:treevana_user/app/orders/controllers/orders_controller.dart';
+import 'package:treevana_user/app/products/controllers/product_controller.dart';
 import 'package:treevana_user/app/products/controllers/products_controller.dart';
 import 'package:treevana_user/core/constants.dart';
 import 'package:get/get.dart';
@@ -15,6 +17,16 @@ class MyHelpers {
       message: text,
       title: 'An error occurred!',
       backgroundColor: MyConstants.errorColor,
+      isDismissible: false,
+      duration: Duration(seconds: 4),
+    ));
+  }
+
+  static void showSuccess(String text) {
+    Get.showSnackbar(GetSnackBar(
+      message: text,
+      title: "Success!",
+      backgroundColor: MyConstants.primaryColor,
       isDismissible: false,
       duration: Duration(seconds: 4),
     ));
@@ -46,6 +58,8 @@ class MyHelpers {
   static initializeControllers() {
     Get.put(OrdersController());
     Get.put(ProductsController());
+    Get.put(ProductController());
+    Get.put(OrderController());
     Get.put(UserController());
   }
 

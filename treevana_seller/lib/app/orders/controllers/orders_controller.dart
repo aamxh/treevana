@@ -10,15 +10,16 @@ class OrdersController extends GetxController {
     orders.add(order);
   }
 
-  void updateStatus(String id, OrderStatus status) {
-    final index = orders.indexWhere((o) => o.id == id);
-    if (index != -1) {
-      orders[index] = OrderModel(
-        id: orders[index].id,
-        product: orders[index].product,
-        quantity: orders[index].quantity,
+  void updateStatus(int idx, OrderStatus status) {
+    if (idx >= 0) {
+      orders[idx] = OrderModel(
+        product: orders[idx].product,
+        quantity: orders[idx].quantity,
         status: status,
-        date: orders[index].date,
+        date: orders[idx].date,
+        name: '',
+        phone: '',
+        wilaya: ''
       );
     }
   }

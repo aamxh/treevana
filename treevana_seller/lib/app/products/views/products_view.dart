@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:treevana_seller/app/products/controllers/product_controller.dart';
 import 'package:treevana_seller/core/constants.dart';
 import '../controllers/products_controller.dart';
 import '../../products/views/product_view.dart';
@@ -11,7 +12,7 @@ class ProductsView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    final controller = Get.find<ProductsController>();
+    final productsCtrl = Get.find<ProductsController>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -28,11 +29,14 @@ class ProductsView extends StatelessWidget {
                 style: theme.textTheme.bodyLarge)) :
         ListView.builder(
           padding: EdgeInsets.all(size.width * 0.04),
-          itemCount: MyConstants.products.length,
+          itemCount: productsCtrl.products.length,
           itemBuilder: (context, index) {
-            final product = MyConstants.products[index];
+            final product = productsCtrl.products[index];
             return GestureDetector(
-              onTap: () => Get.to(() => ProductView(product: product)),
+              onTap: () {
+                Get.find<ProductController>().product.value = product;
+                Get.to(() => ProductView());
+              },
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
@@ -45,7 +49,11 @@ class ProductsView extends StatelessWidget {
                     children: [
                       ClipRRect(
                         borderRadius: BorderRadius.circular(8),
-                        child: Image.asset(
+                        child: product.picture.isEmpty ?
+                        Image.network(
+                          "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800&fit=crop",
+                        ) :
+                        Image.asset(
                           product.picture,
                           width: size.width * 0.25,
                           height: size.width * 0.25,

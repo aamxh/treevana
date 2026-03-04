@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_seller/app/auth/auth_api.dart';
-import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
 import 'package:treevana_seller/app/auth/views/welcome_view.dart';
 import 'package:treevana_seller/core/constants.dart';
 
@@ -35,14 +35,18 @@ class SettingsView extends StatelessWidget {
                     ),
                     const SizedBox(height: 12),
                     Text(
-                      userCtrl.user.value.name,
+                      userCtrl.user.value.name.isEmpty
+                          ? 'Treevana Seller'
+                          : userCtrl.user.value.name,
                       style: theme.textTheme.titleLarge!.copyWith(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                     Text(
-                      userCtrl.user.value.email,
+                      userCtrl.user.value.email.isEmpty
+                          ? 'No email available'
+                          : userCtrl.user.value.email,
                       style: theme.textTheme.bodyMedium!.copyWith(
                         color: Colors.white70,
                       ),

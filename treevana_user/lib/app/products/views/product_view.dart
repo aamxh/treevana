@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/products/models/product_model.dart';
+import 'package:treevana_user/app/orders/controllers/order_controller.dart';
+import 'package:treevana_user/app/orders/models/order_model.dart';
+import 'package:treevana_user/app/products/controllers/product_controller.dart';
 import 'package:treevana_user/app/orders/views/order_view.dart';
 import 'package:treevana_user/core/constants.dart';
-import '../../orders/controllers/orders_controller.dart';
-import 'package:treevana_user/app/auth/models/user_model.dart';
+import 'package:treevana_user/app/common/models/user_model.dart';
 
 class ProductView extends StatelessWidget {
 
-  final ProductModel product;
-  const ProductView({super.key, required this.product});
+  const ProductView({super.key});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    final ordersController = Get.find<OrdersController>();
+    final orderCtrl = Get.find<OrderController>();
+    final productCtrl = Get.find<ProductController>();
     final user = UserModel(
-      id: 'u0',
       name: 'Demo User',
       email: 'demo@treevana.com',
       password: '',
       phone: '+213 555 123 456',
-      avatar: 'https://cdn-icons-png.flaticon.com/512/219/219970.png',
+      //avatar: 'https://cdn-icons-png.flaticon.com/512/219/219970.png',
     );
     return Scaffold(
       appBar: AppBar(
@@ -38,7 +38,7 @@ class ProductView extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(12),
               child: Image.asset(
-                product.picture,
+                orderCtrl.order.value.product.picture,
                 width: size.width,
                 height: size.height * 0.3,
                 fit: BoxFit.cover,
@@ -46,17 +46,17 @@ class ProductView extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03),
             Text(
-              product.title,
+              productCtrl.product.value.title,
               style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 5),
             Text(
-              product.description,
+              productCtrl.product.value.description,
               style: theme.textTheme.bodyMedium,
             ),
             const SizedBox(height: 5),
             Text(
-              '\$${product.price.toStringAsFixed(2)}',
+              '\$${productCtrl.product.value.price.toStringAsFixed(2)}',
               style: theme.textTheme.titleMedium?.copyWith(
                 color: MyConstants.primaryColor,
                 fontWeight: FontWeight.w600,
@@ -75,15 +75,15 @@ class ProductView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      product.seller.name,
+                      productCtrl.product.value.seller.name,
                       style: theme.textTheme.bodyLarge,
                     ),
                     Text(
-                      "Email: ${product.seller.email}",
+                      "Email: ${productCtrl.product.value.seller.email}",
                       style: theme.textTheme.bodyMedium,
                     ),
                     Text(
-                      "Phone: ${product.seller.phoneNumber}",
+                      "Phone: ${productCtrl.product.value.seller.phone}",
                       style: theme.textTheme.bodyMedium,
                     ),
                   ],
@@ -99,7 +99,18 @@ class ProductView extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                 ),
-                onPressed: () => Get.to(() => OrderView(productName: product.title)),
+                onPressed: () {
+                  Get.find<OrderController>().order.value = OrderModel(
+                      product: productCtrl.product.value,
+                      quantity: 1,
+                      status: OrderStatus.pending,
+                      date: DateTime.now(),
+                      wilaya: '',
+                      phone: '',
+                    name: '',
+                  );
+                  Get.to(() => OrderView());
+                },
                 icon: const Icon(
                   Icons.shopping_bag_outlined,
                   color: Colors.white,

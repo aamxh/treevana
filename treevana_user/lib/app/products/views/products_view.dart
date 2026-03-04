@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:treevana_user/app/products/models/product_model.dart';
+import 'package:treevana_user/app/products/controllers/product_controller.dart';
 import 'package:treevana_user/core/constants.dart';
 import '../controllers/products_controller.dart';
 import '../../products/views/product_view.dart';
@@ -33,7 +33,10 @@ class ProductsView extends StatelessWidget {
           itemBuilder: (context, index) {
             final product = MyConstants.products[index];
             return GestureDetector(
-              onTap: () => Get.to(() => ProductView(product: product)),
+              onTap: () {
+                Get.find<ProductController>().product.value = product;
+                Get.to(() => ProductView());
+              },
               child: Card(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),

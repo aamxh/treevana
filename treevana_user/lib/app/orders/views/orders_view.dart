@@ -114,7 +114,7 @@ class OrdersView extends StatelessWidget {
                               style: theme.textTheme.bodyMedium,
                             ),
                             Text(
-                              "Phone: ${product.seller.phoneNumber}",
+                              "Phone: ${product.seller.phone}",
                               style: theme.textTheme.bodyMedium,
                             ),
                           ],

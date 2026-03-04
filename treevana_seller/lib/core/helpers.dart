@@ -1,4 +1,10 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
+import 'package:treevana_seller/app/orders/controllers/order_controller.dart';
+import 'package:treevana_seller/app/orders/controllers/orders_controller.dart';
+import 'package:treevana_seller/app/products/controllers/add_product_controller.dart';
+import 'package:treevana_seller/app/products/controllers/product_controller.dart';
+import 'package:treevana_seller/app/products/controllers/products_controller.dart';
 import 'package:treevana_seller/core/constants.dart';
 import 'package:get/get.dart';
 import 'dart:math';
@@ -10,8 +16,18 @@ class MyHelpers {
   static void showError(String text) {
     Get.showSnackbar(GetSnackBar(
       message: text,
-      title: 'An error occured!',
+      title: 'An error occurred!',
       backgroundColor: MyConstants.errorColor,
+      isDismissible: false,
+      duration: Duration(seconds: 4),
+    ));
+  }
+
+  static void showSuccess(String text) {
+    Get.showSnackbar(GetSnackBar(
+      message: text,
+      title: "Success!",
+      backgroundColor: MyConstants.primaryColor,
       isDismissible: false,
       duration: Duration(seconds: 4),
     ));
@@ -38,6 +54,15 @@ class MyHelpers {
     if (pass1.length < 6) return "Password must be at least 6 characters long!";
     if (pass1 != pass2) return "The two passwords are different!";
     return null;
+  }
+
+  static initializeControllers() {
+    Get.put(OrdersController());
+    Get.put(ProductsController());
+    Get.put(ProductController());
+    Get.put(OrderController());
+    Get.put(UserController());
+    Get.put(AddProductController());
   }
 
 }

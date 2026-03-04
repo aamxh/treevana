@@ -1,9 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'seller_model.g.dart';
+part 'client_model.g.dart';
 
 @JsonSerializable()
-class SellerModel {
+class ClientModel {
 
   final String id;
   final String name;
@@ -11,7 +11,7 @@ class SellerModel {
   final String avatar;
   final String phone;
 
-  SellerModel({
+  ClientModel({
     this.id = '',
     required this.name,
     required this.email,
@@ -19,8 +19,8 @@ class SellerModel {
     required this.phone,
   });
 
-  factory SellerModel.fromJson(Map<String, dynamic> json) =>
-      _$SellerModelFromJson(json);
-  Map<String, dynamic> toJson() => _$SellerModelToJson(this);
+  factory ClientModel.fromJson(Map<String, dynamic> json) =>
+      _$ClientModelFromJson(json);
+  Map<String, dynamic> toJson() => _$ClientModelToJson(this);
 
 }

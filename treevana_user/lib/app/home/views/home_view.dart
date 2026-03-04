@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:treevana_user/app/orders/views/orders_view.dart';
-import 'package:treevana_user/app/products/controllers/products_controller.dart';
+import 'package:treevana_user/app/products/controllers/product_controller.dart';
 import 'package:treevana_user/app/products/views/product_view.dart';
 import 'package:treevana_user/app/products/views/products_view.dart';
 import 'package:treevana_user/app/settings/views/settings_view.dart';
@@ -92,7 +92,8 @@ class _ProductCard extends StatelessWidget {
     final theme = Theme.of(context);
     return GestureDetector(
         onTap: () {
-          Get.to(() => ProductView(product: product,));
+          Get.find<ProductController>().product.value = product;
+          Get.to(() => ProductView());
         },
         child: Card(
           shape: RoundedRectangleBorder(
@@ -118,14 +119,18 @@ class _ProductCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(product.title,
-                          style: theme.textTheme.titleMedium
-                              ?.copyWith(fontWeight: FontWeight.bold)),
+                      Text(
+                        product.title,
+                        style: theme.textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
+                      ),
                       SizedBox(height: size.height * 0.005),
-                      Text(product.description,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodyMedium),
+                      Text(
+                        product.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.bodyMedium,
+                      ),
                       SizedBox(height: size.height * 0.005),
                       Text(
                         '\$${product.price.toStringAsFixed(2)}',

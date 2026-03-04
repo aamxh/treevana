@@ -15,7 +15,7 @@ class ProductModel {
   final SellerModel seller;
 
   ProductModel({
-    required this.id,
+    this.id = '',
     required this.title,
     required this.description,
     required this.quantity,

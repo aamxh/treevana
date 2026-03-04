@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../common/models/seller_model.dart';
+import '../../common/models/client_model.dart';
 
 part 'product_model.g.dart';
 
@@ -12,7 +12,6 @@ class ProductModel {
   final int quantity;
   final double price;
   final String picture;
-  final SellerModel seller;
 
   ProductModel({
     required this.id,
@@ -21,7 +20,6 @@ class ProductModel {
     required this.quantity,
     required this.price,
     required this.picture,
-    required this.seller,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>

@@ -1,4 +1,5 @@
-import 'package:treevana_seller/app/auth/controllers/user_controller.dart';
+import 'package:treevana_seller/app/auth/controllers/sign_up_controller.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
 import 'package:treevana_seller/app/auth/views/sign_up_view.dart';
 import 'package:treevana_seller/core/constants.dart';
 import 'package:flutter/material.dart';
@@ -43,7 +44,7 @@ class WelcomeView extends StatelessWidget {
             SizedBox(height: size.height * 0.15,),
             ElevatedButton(
               onPressed: () {
-                Get.put(UserController());
+                Get.put(SignUpController());
                 Get.to(() => SignUpView());
               },
               style: ElevatedButton.styleFrom(
@@ -59,10 +60,7 @@ class WelcomeView extends StatelessWidget {
             ),
             SizedBox(height: size.height * 0.03,),
             ElevatedButton(
-              onPressed: () {
-                Get.put(UserController());
-                Get.to(SignInView());
-              },
+              onPressed: () => Get.to(() => SignInView()),
               style: ElevatedButton.styleFrom(
                 elevation: 0,
                 backgroundColor: theme.scaffoldBackgroundColor,

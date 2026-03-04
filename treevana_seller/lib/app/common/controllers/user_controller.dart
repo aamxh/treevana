@@ -1,16 +1,14 @@
 import 'package:get/get.dart';
 import 'package:treevana_seller/app/auth/auth_api.dart';
-import 'package:treevana_seller/app/auth/models/user_model.dart';
+import 'package:treevana_seller/app/common/models/user_model.dart';
 
 class UserController extends GetxController {
 
   final Rx<UserModel> user = UserModel(
-    id: '',
     name: '',
     email: '',
     password: '',
     phone: '',
-    avatar: ''
   ).obs;
 
   @override

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../models/order_model.dart';
+import 'package:treevana_seller/app/common/controllers/user_controller.dart';
+import 'package:treevana_seller/core/constants.dart';
 import '../controllers/orders_controller.dart';
 
 class OrdersView extends StatelessWidget {
@@ -22,14 +23,15 @@ class OrdersView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
-    final controller = Get.find<OrdersController>();
+    final ordersCtrl = Get.find<OrdersController>();
+    final userCtrl = Get.find<UserController>();
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('My Orders', style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white)),
+        title: Text('Clients Orders', style: theme.textTheme.headlineSmall?.copyWith(color: Colors.white)),
       ),
       body: Obx(() {
-        final orders = controller.orders;
+        final orders = ordersCtrl.orders;
         if (orders.isEmpty) {
           return Center(
             child: Text('No orders yet.', style: theme.textTheme.bodyLarge),
@@ -106,15 +108,15 @@ class OrdersView extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              product.seller.name,
+                              MyConstants.client.name,
                               style: theme.textTheme.bodyLarge,
                             ),
                             Text(
-                              "Email: ${product.seller.email}",
+                              "Email: ${MyConstants.client.email}",
                               style: theme.textTheme.bodyMedium,
                             ),
                             Text(
-                              "Phone: ${product.seller.phoneNumber}",
+                              "Phone: ${MyConstants.client.phone}",
                               style: theme.textTheme.bodyMedium,
                             ),
                           ],
